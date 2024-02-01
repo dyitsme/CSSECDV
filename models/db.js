@@ -9,11 +9,20 @@ const db  = mysql.createPool({
 }).promise();
 
 async function getAllUsers() {
-  const sql = "SELECT * FROM users";
-  const [rows] = await db.query(sql);
+  const [rows] = await db.query(`SELECT * FROM users`);
   return rows;
 }
 
+async function createUser(firstName, lastName, email, phone, password) {
+  const result = await db.query(`
+    INSERT INTO users (firstName, lastName, email, phone, password)
+    VALUES (?, ?, ?, ?, ?)
+    `, [firstName, lastName, email, phone, password]);
+  return result;
+
+}
+
 module.exports = {
-  getAllUsers
+  getAllUsers,
+  createUser
 }
