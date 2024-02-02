@@ -10,11 +10,19 @@ const loginView = (req, res) => {
 }
 
 const registerView = (req, res) => {
-  res.render("register")
+  res.render("register");
+}
+
+const createUser = async (req, res) => {
+  const { firstName, lastName, email, phone, password } = req.body;
+  const user = await db.createUser(firstName, lastName, email, phone, password);
+  res.status(200).send("ok");
+
 }
 
 module.exports = {
   getAllUsers,
   loginView,
-  registerView
+  registerView,
+  createUser
 }

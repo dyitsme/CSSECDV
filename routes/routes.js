@@ -3,8 +3,9 @@ const loginController = require("../controllers/loginController");
 
 const router = express.Router();
 
-router.get('/login', loginController.loginView);
-router.get('/register', loginController.registerView);
-router.get('/getAllUsers', loginController.getAllUsers);
+router.get("/login", loginController.loginView);
+router.get("/register", loginController.registerView);
+router.get("/api/users", loginController.getAllUsers);
+router.post("/api/create-user", loginController.createUser);
 
 module.exports = router;
