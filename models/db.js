@@ -11,7 +11,7 @@ const db  = mysql.createPool({
 async function getAllUsers() {
   const [rows] = await db.query(`SELECT * FROM users`);
   return rows;
-}
+};
 
 async function createUser(firstName, lastName, email, phone, password) {
   const result = await db.query(`
@@ -20,9 +20,18 @@ async function createUser(firstName, lastName, email, phone, password) {
     `, [firstName, lastName, email, phone, password]);
   return result;
 
-}
+};
+
+async function getUserByEmail(email) {
+  const [result] = await db.query(`
+    SELECT * FROM cssecdv.users
+    WHERE email = ?
+  `, [email])
+  return result[0];  
+};
 
 module.exports = {
   getAllUsers,
-  createUser
-}
+  createUser,
+  getUserByEmail
+};
