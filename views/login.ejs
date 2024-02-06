@@ -4,8 +4,31 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Document</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
 </head>
 <body>
-  Login
+  <section class="section is-medium">
+    <div class="columns is-centered">
+      <div class="column is-two-fifths box">
+        <h1 class="title is-1 has-text-centered">Sign In</h1>
+        <form>
+          <div class="field">
+            <label class="label">Email</label>
+            <div class="control">
+              <input class="input" type="email" placeholder="Email">
+            </div>
+          </div>
+          <div class="field">
+            <label class="label">Password</label>
+            <div class="control">
+              <input class="input" type="password" placeholder="Password">
+            </div>
+          </div>
+          <button class="button is-primary">Login</button>
+        </form>
+        <a class="has-text-link is-underlined">Don't have an account? Sign in.</a>
+      </div>
+    </div>
+  </section>
 </body>
 </html>
