@@ -7,7 +7,9 @@ const getAllUsers = async (req, res) => {
 };
 
 const loginView = (req, res) => {
-  res.render("login");
+  res.render("login", {
+    isValid: true
+  });
 };
 
 const registerView = (req, res) => {
@@ -32,7 +34,9 @@ const loginUser = async (req, res) => {
   console.log(user);
 
   const isMatch = await bcrypt.compare(password, user.password);
-  res.send(isMatch);
+  res.render("login", {
+    isValid: isMatch
+  });
 };
 
 module.exports = {

@@ -8,9 +8,17 @@
 </head>
 <body>
   <section class="section is-medium">
+    <% if (!isValid) { %>
     <div class="columns is-centered">
-      <div class="column is-two-fifths box">
-        <h1 class="title is-1 has-text-centered">Sign In</h1>
+      <div class="column is-two-fifths notification is-danger is-light has-text-centered">
+        <button class="delete"></button>
+        Incorrect email or password.
+      </div>
+    </div>
+    <% } %>
+    <div class="columns is-centered">
+      <div class="column is-two-fifths box px-5 py-6">
+        <h2 class="title is-2">Login</h2>
         <form>
           <div class="field">
             <label class="label">Email</label>
@@ -24,9 +32,9 @@
               <input class="input" type="password" placeholder="Password">
             </div>
           </div>
-          <button class="button is-primary">Login</button>
+          <button class="button is-primary is-fullwidth">Login</button>
         </form>
-        <a class="has-text-link is-underlined">Don't have an account? Sign in.</a>
+        <a class="has-text-centered has-text-link is-underlined" href="/register">Don't have an account? Sign in.</a>
       </div>
     </div>
   </section>
