@@ -14,6 +14,8 @@ const loginView = (req, res) => {
 
 const registerView = (req, res) => {
   res.render("register");
+
+  var regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 };
 
 const createUser = async (req, res) => {
@@ -33,10 +35,12 @@ const loginUser = async (req, res) => {
   const user = await db.getUserByEmail(email);
   console.log(user);
 
-  const isMatch = await bcrypt.compare(password, user.password);
-  res.render("login", {
-    isValid: isMatch
-  });
+  const result = await bcrypt.compare(password, user.password);
+  // res.render("login", {
+  //   isValid: isMatch
+  // });
+  res.json({redirect: "/"});
+  res.send(isMatch);
 };
 
 module.exports = {
