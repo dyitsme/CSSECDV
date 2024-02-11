@@ -4,8 +4,99 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Document</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
 </head>
 <body>
-  Register
+  <div class="container">
+    <div class="columns is-justify-content-center">
+      <div class="column is-6-tablet is-5-desktop is-4-widescreen is-3-fullh">
+        <form method="POST" action="https://herotofu.com/start" class="box p-5">
+          <h1 class="title is-1 has-text-centered">Sign Up</h1>
+          <label class="is-block mb-4">
+            <span class="is-block mb-2">First Name</span>
+            <input
+              required
+              type="first"
+              class="input"
+              placeholder="First Name"
+            />
+          </label>
+          
+          <label class="is-block mb-4">
+            <span class="is-block mb-2">Last Name</span>
+            <input
+              required
+              type="last"
+              class="input"
+              placeholder="Last Name"
+            />
+          </label>
+          
+          <label class="is-block mb-4">
+            <span class="is-block mb-2">Phone Number</span>
+            <input
+              name="phone"
+              type="phone"
+              class="input"
+              maxlength="11"
+              placeholder="09---------"
+              required
+            />
+          </label>
+          
+          <label class="is-block mb-4">
+            <span class="is-block mb-2">Email Address</span>
+            <input
+              required
+              type="email"
+              class="input"
+              placeholder="email@example.com"
+            />
+          </label>
+          
+          <label class="is-block mb-4">
+            <span class="is-block mb-2">Password</span>
+            <input
+              name="password"
+              type="password"
+              class="input"
+              minlength="8"
+              placeholder="(must be 8+ chars)"
+              required
+            />
+          </label>
+         
+          <label class="is-block mb-4">
+            <span class="is-block mb-2">Confirm Password</span>
+            <input
+              name="confirm"
+              type="confirm"
+              class="input"
+              minlength="8"
+              placeholder="(must be 8+ chars)"
+              required
+            />
+          </label>
+  
+          <div class="mb-4">
+            <button type="submit" class="button is-link px-4">Sign Up</button>
+          </div>
+  
+          <div>
+            <div class="is-size-7 has-text-right">
+              by
+              <a
+                href="https://herotofu.com/start"
+                class="has-text-dark"
+                target="_blank"
+                >DEMADALE</a
+              >
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+  
 </body>
 </html>
