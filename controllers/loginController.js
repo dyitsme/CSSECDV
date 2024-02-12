@@ -7,10 +7,8 @@ const getAllUsers = async (req, res) => {
 };
 
 const loginView = (req, res) => {
-  if (!req.session.authenticated) {
-    const err_msg = req.flash("err_msg");
-    res.render("login", { err_msg: err_msg });
-  }
+  const err_msg = req.flash("err_msg");
+  res.render("login", { err_msg: err_msg });
 };
 
 const registerView = (req, res) => {
@@ -39,21 +37,24 @@ const loginUser = async (req, res) => {
     if (result) {
       // res.redirect("/");
       req.session.authenticated = true;
-      req.session.user = { email };
+      req.session.user = { 
+        firstName: user.firstName,
+        lastName: user.lastName,
+        email: user.email,
+        phone: user.phone,
+        isAdmin: user.isAdmin
+      };
       // res.json(req.session);
       res.redirect("/");
 
     }
     else {
-      // res.status(403).json({ msg: "Invalid email or password! Error p"});
       req.flash("err_msg", "Invalid email or password! Error P");
       res.redirect("/login");
     }
   }
   else {
-    // res.status(403).json({ msg: "Invalid email or password! Error e"});
     req.flash("err_msg", "Invalid email or password! Error E");
-    // console.log("error_msg email")
     res.redirect("/login");
   }
 };

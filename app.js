@@ -3,8 +3,19 @@ const express = require("express");
 const routes = require("./routes/routes");
 const flash = require("express-flash");
 const session = require("express-session");
-const store = new session.MemoryStore();
+const MySQLStore = require('express-mysql-session')(session);
+
 const app = express();
+
+const options = {
+  host     : process.env.host,
+  port     : process.env.dbport,
+  user     : process.env.user,
+  password : process.env.password,
+  database : process.env.database
+};
+
+const sessionStore = new MySQLStore(options);
 
 app.use(express.static("public"));
 app.use(express.urlencoded({ extended: true }));
@@ -15,7 +26,7 @@ app.use(session({
   cookie: { maxAge: 60000 },
   saveUninitialized: true,
   resave: false,
-  store: store
+  store: sessionStore
 }));
 
 app.use(flash());
