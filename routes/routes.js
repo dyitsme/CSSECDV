@@ -8,7 +8,7 @@ router.get("/login", loginController.loginView);
 router.get("/register", loginController.registerView);
 router.get("/api/users", loginController.getAllUsers);
 router.post("/api/create-user", loginController.createUser);
-router.post("/api/login-user", loginController.loginUser);
+router.post("/api/login", loginController.loginUser);
 
 router.get("/", homeController.homeView);
 

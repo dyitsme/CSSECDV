@@ -7,9 +7,10 @@ const getAllUsers = async (req, res) => {
 };
 
 const loginView = (req, res) => {
-  res.render("login", {
-    isValid: true
-  });
+  if (!req.session.authenticated) {
+    const err_msg = req.flash("err_msg");
+    res.render("login", { err_msg: err_msg });
+  }
 };
 
 const registerView = (req, res) => {
@@ -30,17 +31,31 @@ const createUser = async (req, res) => {
 
 const loginUser = async (req, res) => {
   const { email, password } = req.body;
-
+  
   // fetch email from database
   const user = await db.getUserByEmail(email);
-  console.log(user);
+  if (user) {
+    const result = await bcrypt.compare(password, user.password);
+    if (result) {
+      // res.redirect("/");
+      req.session.authenticated = true;
+      req.session.user = { email };
+      // res.json(req.session);
+      res.redirect("/");
 
-  const result = await bcrypt.compare(password, user.password);
-  // res.render("login", {
-  //   isValid: isMatch
-  // });
-  res.json({redirect: "/"});
-  res.send(isMatch);
+    }
+    else {
+      // res.status(403).json({ msg: "Invalid email or password! Error p"});
+      req.flash("err_msg", "Invalid email or password! Error P");
+      res.redirect("/login");
+    }
+  }
+  else {
+    // res.status(403).json({ msg: "Invalid email or password! Error e"});
+    req.flash("err_msg", "Invalid email or password! Error E");
+    // console.log("error_msg email")
+    res.redirect("/login");
+  }
 };
 
 module.exports = {

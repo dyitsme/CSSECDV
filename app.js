@@ -3,6 +3,7 @@ const express = require("express");
 const routes = require("./routes/routes");
 const flash = require("express-flash");
 const session = require("express-session");
+const store = new session.MemoryStore();
 const app = express();
 
 app.use(express.static("public"));
@@ -13,8 +14,10 @@ app.use(session({
   secret: process.env.session_secret,
   cookie: { maxAge: 60000 },
   saveUninitialized: true,
-  resave: false
+  resave: false,
+  store: store
 }));
+
 app.use(flash());
 
 app.set("view engine", "ejs");

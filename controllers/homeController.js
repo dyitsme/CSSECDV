@@ -1,7 +1,12 @@
 const db = require("../models/db");
 
 const homeView = (req, res) => {
-  res.render("home");
+  if (req.session.authenticated) {
+    res.render("home");
+  }
+  else {
+    res.redirect("/login");
+  }
 };
 
 module.exports = {
