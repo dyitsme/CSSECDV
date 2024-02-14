@@ -10,25 +10,38 @@
   <div class="container">
     <div class="columns is-justify-content-center">
       <div class="column is-6-tablet is-5-desktop is-4-widescreen is-3-fullh">
-        <form method="POST" action="https://herotofu.com/start" class="box p-5">
+        <form method="POST" action="/api/create-user" class="box p-5">
           <h1 class="title is-1 has-text-centered">Sign Up</h1>
           <label class="is-block mb-4">
             <span class="is-block mb-2">First Name</span>
             <input
-              required
-              type="first"
+              name="firstName"
+              type="firstName"
               class="input"
               placeholder="First Name"
+              required
             />
           </label>
           
           <label class="is-block mb-4">
             <span class="is-block mb-2">Last Name</span>
             <input
-              required
-              type="last"
+              name="lastName"
+              type="lastName"
               class="input"
               placeholder="Last Name"
+              required
+            />
+          </label>
+          
+          <label class="is-block mb-4">
+            <span class="is-block mb-2">Email Address</span>
+            <input
+              name="email"
+              type="email"
+              class="input"
+              placeholder="email@example.com"
+              required
             />
           </label>
           
@@ -43,17 +56,7 @@
               required
             />
           </label>
-          
-          <label class="is-block mb-4">
-            <span class="is-block mb-2">Email Address</span>
-            <input
-              required
-              type="email"
-              class="input"
-              placeholder="email@example.com"
-            />
-          </label>
-          
+
           <label class="is-block mb-4">
             <span class="is-block mb-2">Password</span>
             <input
@@ -70,10 +73,20 @@
             <span class="is-block mb-2">Confirm Password</span>
             <input
               name="confirm"
-              type="confirm"
+              type="password"
               class="input"
               minlength="8"
               placeholder="(must be 8+ chars)"
+              required
+            />
+          </label>
+
+          <label class="is-block mb-4">
+            <span class="is-block mb-2">Picture</span>
+            <input
+              name="picture"
+              type="file"
+              class="input"
               required
             />
           </label>
@@ -86,12 +99,7 @@
           <div>
             <div class="is-size-7 has-text-right">
               by
-              <a
-                href="https://herotofu.com/start"
-                class="has-text-dark"
-                target="_blank"
-                >DEMADALE</a
-              >
+              <label class="has-text-dark">DEMADALE</label>
             </div>
           </div>
         </form>
