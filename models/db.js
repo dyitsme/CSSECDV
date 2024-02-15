@@ -13,11 +13,11 @@ async function getAllUsers() {
   return rows;
 };
 
-async function createUser(firstName, lastName, email, phone, password) {
+async function createUser(firstName, lastName, email, phone, password, img) {
   const result = await db.query(`
-    INSERT INTO users (firstName, lastName, email, phone, password)
-    VALUES (?, ?, ?, ?, ?)
-    `, [firstName, lastName, email, phone, password]);
+    INSERT INTO users (firstName, lastName, email, phone, password, img)
+    VALUES (?, ?, ?, ?, ?, ?)
+    `, [firstName, lastName, email, phone, password, img]);
   return result;
 
 };
