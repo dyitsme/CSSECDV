@@ -11,7 +11,7 @@
   <div class="container">
     <div class="columns is-justify-content-center">
       <div class="column is-6-tablet is-5-desktop is-4-widescreen is-3-fullh">
-        <form method="POST" action="/api/create-user" class="box p-5">
+        <form method="POST" action="/api/create-user" class="box p-5" id="register" onchange="checkFields()">
           <h1 class="title is-1 has-text-centered">Sign Up</h1>
           
           <label class="is-block mb-4">
@@ -21,6 +21,7 @@
               class="input"
               name="firstName"
               id="firstName"
+              maxlength="20"
               placeholder="First Name"
               required
             />
@@ -35,6 +36,7 @@
               class="input"
               name="lastName"
               id="lastName"
+              maxlength="20"
               placeholder="Last Name"
               required
             />
@@ -49,6 +51,7 @@
               class="input"
               name="email"
               id="email"
+              maxlength="50"
               placeholder="email@example.com"
               required
             />
@@ -79,6 +82,7 @@
               name="password"
               id="password"
               minlength="8"
+              maxlength="80"
               placeholder="(must be 8+ chars)"
               required
             />
@@ -94,12 +98,13 @@
               name="confirmPass"
               id="confirmPass"
               minlength="8"
+              maxlength="80"
               placeholder="(must be 8+ chars)"
               required
             />
           </label>
 
-          <p id="confirmErr" style="display: none; color: red;">Password does not match BOBO!</p>
+          <p id="confirmErr" style="display: none; color: red;">Password does not match</p>
 
           <label class="is-block mb-4">
             <span class="is-block mb-2">Picture</span>
@@ -115,7 +120,7 @@
           <p id="picErr" style="display: none; color: red;">File type must be .jpg or .png</p>
 
           <div class="mb-4">
-            <button type="submit" class="button is-link px-4">Sign Up</button>
+            <button type="submit" id="submit" class="button is-link px-4">Sign Up</button>
           </div>
           <a class="has-text-centered has-text-link is-underlined" href="/login">Already have an account? Sign in.</a>
   
@@ -140,15 +145,16 @@
 
       if (valid){
           err.style.display = 'none';
-          flag = 1;
+          flag[0] = 1;
       }
 
       else {
           err.style.display = 'block';
-          flag = 0;
+          flag[0] = 0;
       }
   }
 
+  var firstFlag = {0:1}, lastFlag = {0:1}, emailFlag = {0:1}, phoneFlag = {0:1}, passwordFlag = {0:1}, confirmFlag = {0:1}, pictureFlag = {0:1};
   var firstName = document.querySelector('#firstName');
   var firstNameErr = document.querySelector('#firstNameErr');
   var lastName = document.querySelector('#lastName');
@@ -163,35 +169,37 @@
   var confirmErr = document.querySelector('#confirmErr');
   var picture = document.querySelector('#picture');
   var picErr = document.querySelector('#picErr');
+  var register = document.querySelector('#register');
+  var submit = document.querySelector('#submit');
 
   firstName.addEventListener('input', function(e){
-      var pattern = /^[a-zA-Z]{1,20}$/;
+      var pattern = /^[a-zA-Z][a-zA-Z\s-]{0,18}[a-zA-Z]$/;
       var currentValue = e.target.value;
-      isValid(firstNameErr, pattern, currentValue);
+      isValid(firstNameErr, pattern, currentValue, firstFlag);
   })
 
   lastName.addEventListener('input', function(e){
-      var pattern = /^[a-zA-Z]{1,20}$/;
+      var pattern = /^[a-zA-Z][a-zA-Z\s-]{0,18}[a-zA-Z]$/;
       var currentValue = e.target.value;
-      isValid(lastNameErr, pattern, currentValue);
+      isValid(lastNameErr, pattern, currentValue, lastFlag);
   })
 
   email.addEventListener('input', function(e){
       var pattern = /^(?!.*[._-]{2,})[a-z.A-Z_0-9-]+@([a-zA-Z0-9-]+\.)+[a-zA-Z]{2,}$/;
       var currentValue = e.target.value;
-      isValid(emailErr, pattern, currentValue);
+      isValid(emailErr, pattern, currentValue, emailFlag);
   })
 
   phone.addEventListener('input', function(e){
       var pattern = /^[0-9]{11}$/;
       var currentValue = e.target.value;
-      isValid(phoneErr, pattern, currentValue);
+      isValid(phoneErr, pattern, currentValue, phoneFlag);
   })
 
   password.addEventListener('input', function(e){
       var pattern = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])((?=.*\W)|(?=.*_))[a-zA-Z0-9_\W]{8,20}$/;
       var currentValue = e.target.value;
-      isValid(passErr, pattern, currentValue);
+      isValid(passErr, pattern, currentValue, passwordFlag);
   })
 
   confirmPass.addEventListener('input', function(e){
@@ -199,27 +207,56 @@
       var currentValue = e.target.value;
 
       if (pattern == currentValue){
-          confirmErr.style.display = 'none'
+          confirmErr.style.display = 'none';
+          confirmFlag[0] = 1;
       }
 
       else {
-          confirmErr.style.display = 'block'
+          confirmErr.style.display = 'block';
+          confirmFlag[0] = 0;
       }
   })
 
   picture.addEventListener('input', function(e){
-      console.log("hello");
       var currentValue = e.target.value.split('.');
-      console.log(currentValue);
       var ext = currentValue[currentValue.length-1];  
-      console.log(ext);
 
       if(ext == "jpg" || ext == "png") {
-          picErr.style.display = 'none'
+          picErr.style.display = 'none';
+          pictureFlag[0] = 1;
       }
 
       else {
-          picErr.style.display = 'block'
+          picErr.style.display = 'block';
+          pictureFlag[0] = 0;
       }
   })
+  
+  function checkFields(){
+    console.log("checkFields");
+    if (firstFlag[0] == 1 && lastFlag[0] == 1 && emailFlag[0] == 1 && phoneFlag[0] == 1 && passwordFlag[0] == 1 && confirmFlag[0] == 1 && pictureFlag[0] == 1){
+        console.log("correct");
+        console.log(firstFlag);
+        console.log(lastFlag);
+        console.log(emailFlag);
+        console.log(phoneFlag);
+        console.log(passwordFlag);
+        console.log(confirmFlag);
+        console.log(pictureFlag);
+        submit.removeAttribute('disabled');
+      }
+
+      else {
+        console.log("incorrect:");
+        console.log(firstFlag);
+        console.log(lastFlag);
+        console.log(emailFlag);
+        console.log(phoneFlag);
+        console.log(passwordFlag);
+        console.log(confirmFlag);
+        console.log(pictureFlag);
+        submit.setAttribute('disabled', 'disabled');
+      }
+  }
+
 </script>

@@ -19,23 +19,38 @@
     <br>
     <div class="columns is-centered">
       <div class="column is-two-fifths box px-5 py-6">
-        <h2 class="title is-2">Login</h2>
         <form action="/api/login" method="POST">
+          <h1 class="title is-1 has-text-centered">Login</h1>
+
           <div class="field">
             <label class="label">Email</label>
             <div class="control">
-              <input required class="input" type="email" name="email" placeholder="Email">
+              <input required class="input" type="email" name="email" id="email" placeholder="Email">
             </div>
           </div>
+          
+          <p id="emailErr" style="display: none; color: red;">Please enter a valid Email Address</p>
+          
           <div class="field">
             <label class="label">Password</label>
             <div class="control">
               <input required class="input" type="password" name="password" placeholder="Password">
             </div>
           </div>
-          <button type="submit" class="button is-link">Login</button>
+
+          <div class="mb-4">
+            <button type="submit" class="button is-link px-4">Login</button>
+          </div>
+          
+          <a class="has-text-centered has-text-link is-underlined" href="/register">Don't have an account? Sign in.</a>
+        
+          <div>
+            <div class="is-size-7 has-text-right">
+              by
+              <label class="has-text-dark">DEMADALE</label>
+            </div>
         </form>
-        <a class="has-text-centered has-text-link is-underlined" href="/register">Don't have an account? Sign in.</a>
+        </div>
       </div>
     </div>
   </section>
@@ -43,6 +58,28 @@
 </html>
 
 <script>
+  function isValid(err, pattern, currentValue){
+    var valid = pattern.test(currentValue);
+
+      if (valid){
+          err.style.display = 'none'
+      }
+
+      else {
+          err.style.display = 'block'
+      }
+  }
+  
+  var email = document.querySelector('#email');
+  var emailErr = document.querySelector('#emailErr');
+
+  email.addEventListener('input', function(e){
+      var pattern = /^(?!.*[._-]{2,})[a-z.A-Z_0-9-]+@([a-zA-Z0-9-]+\.)+[a-zA-Z]{2,}$/;
+      var currentValue = e.target.value;
+      isValid(emailErr, pattern, currentValue);
+  })
+
+
   document.addEventListener('DOMContentLoaded', (event) => {
     const delErrMsg = () => {
       const errorMsg = document.querySelector("#error-msg").remove();
