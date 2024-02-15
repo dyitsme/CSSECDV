@@ -12,5 +12,6 @@ router.post("/api/create-user", loginController.createUser);
 router.post("/api/login", loginController.loginUser);
 
 router.get("/", session.isAuthenticated, homeController.homeView);
+router.get("/admin", session.isAuthenticated, homeController.adminView);
 
 module.exports = router;

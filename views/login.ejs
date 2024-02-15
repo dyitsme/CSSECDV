@@ -8,7 +8,7 @@
 </head>
 <body>
   <section class="section is-medium">
-    <% if (err_msg.length > 0) { %>
+    <% if (err_msg?.length) { %>
       <div class="columns is-centered" id="error-msg">
         <div class="column is-two-fifths notification is-danger is-light has-text-centered">
           <button class="delete"></button>
@@ -24,13 +24,13 @@
           <div class="field">
             <label class="label">Email</label>
             <div class="control">
-              <input class="input" type="email" name="email" placeholder="Email">
+              <input required class="input" type="email" name="email" placeholder="Email">
             </div>
           </div>
           <div class="field">
             <label class="label">Password</label>
             <div class="control">
-              <input class="input" type="password" name="password" placeholder="Password">
+              <input required class="input" type="password" name="password" placeholder="Password">
             </div>
           </div>
           <button type="submit" class="button is-link">Login</button>
@@ -43,9 +43,19 @@
 </html>
 
 <script>
-  document.querySelector(".delete").addEventListener("click", delErrMsg);
+  document.addEventListener('DOMContentLoaded', (event) => {
+    const delErrMsg = () => {
+      const errorMsg = document.querySelector("#error-msg").remove();
 
-  function delErrMsg() {
-    document.querySelector("#error-msg").remove();
-  }
+      if (errorMsg) {
+        errorMsg.remove;
+      }
+    };
+
+    const deleteButton = document.querySelector(".delete");
+
+    if (deleteButton) {
+      deleteButton.addEventListener("click", delErrMsg);
+    }
+  });
 </script>

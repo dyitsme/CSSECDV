@@ -6,15 +6,15 @@ const getAllUsers = async (req, res) => {
   res.send(users);
 };
 
-const loginView = (req, res) => {
-  const err_msg = req.flash("err_msg");
+const loginView = async (req, res) => {
+  const err_msg = await req.flash("err_msg");
   res.render("login", { err_msg: err_msg });
 };
 
 const registerView = (req, res) => {
   res.render("register");
 
-  var regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 };
 
 const createUser = async (req, res) => {
@@ -23,8 +23,7 @@ const createUser = async (req, res) => {
   const hash = await bcrypt.hash(password, saltRounds);
 
   const user = await db.createUser(firstName, lastName, email, phone, hash);
-  res.status(200).send("ok");
-
+  res.redirect("/login");
 };
 
 const loginUser = async (req, res) => {
@@ -32,10 +31,12 @@ const loginUser = async (req, res) => {
   
   // fetch email from database
   const user = await db.getUserByEmail(email);
+  console.log("user: ", user);
   if (user) {
     const result = await bcrypt.compare(password, user.password);
     if (result) {
       // res.redirect("/");
+      console.log('result: ', req?.session)
       req.session.authenticated = true;
       req.session.user = { 
         firstName: user.firstName,
@@ -45,15 +46,20 @@ const loginUser = async (req, res) => {
         isAdmin: user.isAdmin
       };
       // res.json(req.session);
-      res.redirect("/");
-
-    }
-    else {
+      console.log('session: ',res.req.sessionID);
+      //res.status(200).json({message: "Successful Login", status: 200, data: res.req.sessionID});
+      console.log(user.isAdmin);
+      if (user.isAdmin == 1) {
+        res.redirect("/admin");
+      }
+      else {
+        res.redirect("/");
+      }
+    } else {
       req.flash("err_msg", "Invalid email or password! Error P");
       res.redirect("/login");
     }
-  }
-  else {
+  } else {
     req.flash("err_msg", "Invalid email or password! Error E");
     res.redirect("/login");
   }
