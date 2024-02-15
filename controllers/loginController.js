@@ -18,12 +18,16 @@ const registerView = (req, res) => {
 };
 
 const createUser = async (req, res) => {
-  const { firstName, lastName, email, phone, password } = req.body;
-  const saltRounds = 10;  
-  const hash = await bcrypt.hash(password, saltRounds);
-
-  const user = await db.createUser(firstName, lastName, email, phone, hash);
-  res.redirect("/login");
+  const { firstName, lastName, email, phone, password, confirmPass, picture } = req.body;
+  if (password != confirmPass) {
+    res.redirect("/register");
+  }
+  else {
+    const saltRounds = 10;  
+    const hash = await bcrypt.hash(password, saltRounds);
+    const user = await db.createUser(firstName, lastName, email, phone, hash, picture);
+    res.redirect("/login");
+  }
 };
 
 const loginUser = async (req, res) => {
@@ -56,11 +60,11 @@ const loginUser = async (req, res) => {
         res.redirect("/");
       }
     } else {
-      req.flash("err_msg", "Invalid email or password! Error P");
+      req.flash("err_msg", "Invalid email or password!");
       res.redirect("/login");
     }
   } else {
-    req.flash("err_msg", "Invalid email or password! Error E");
+    req.flash("err_msg", "Invalid email or password!");
     res.redirect("/login");
   }
 };

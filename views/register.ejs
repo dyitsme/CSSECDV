@@ -135,15 +135,17 @@
 
 <script>
 
-  function isValid(err, pattern, currentValue){
+  function isValid(err, pattern, currentValue, flag){
     var valid = pattern.test(currentValue);
 
       if (valid){
-          err.style.display = 'none'
+          err.style.display = 'none';
+          flag = 1;
       }
 
       else {
-          err.style.display = 'block'
+          err.style.display = 'block';
+          flag = 0;
       }
   }
 
