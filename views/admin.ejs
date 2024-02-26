@@ -6,6 +6,11 @@
   <title>Document</title>
 </head>
 <body>
-  Admin 
+  <h1>Admin</h1> 
+  <% if (users.length > 0) { %>
+    <% users.forEach(user => { %>
+      <div><%= user.firstName %> <%= user.lastName %> <%= user.email %> <%= user.phone %></div>
+    <% }) %>
+  <% } %>
 </body>
 </html>

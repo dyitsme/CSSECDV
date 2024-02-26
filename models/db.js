@@ -13,6 +13,11 @@ async function getAllUsers() {
   return rows;
 };
 
+async function getUsersOnly() {
+  const [rows] = await db.query(`SELECT * FROM users WHERE isAdmin = 0`);
+  return rows;
+}
+
 async function createUser(firstName, lastName, email, phone, password, img) {
   const result = await db.query(`
     INSERT INTO users (firstName, lastName, email, phone, password, img)
@@ -32,6 +37,7 @@ async function getUserByEmail(email) {
 
 module.exports = {
   getAllUsers,
+  getUsersOnly,
   createUser,
   getUserByEmail
 };

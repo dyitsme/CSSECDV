@@ -1,6 +1,7 @@
 const express = require("express");
 const loginController = require("../controllers/loginController");
 const homeController = require("../controllers/homeController");
+const adminController = require("../controllers/adminController");
 const session = require("../middleware/session");
 
 const router = express.Router();
@@ -12,6 +13,6 @@ router.post("/api/create-user", loginController.createUser);
 router.post("/api/login", loginController.loginUser);
 
 router.get("/", session.isAuthenticated, homeController.homeView);
-router.get("/admin", session.isAuthenticated, homeController.adminView);
+router.get("/admin", session.isAuthenticated, adminController.adminView);
 
 module.exports = router;
