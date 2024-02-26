@@ -35,9 +35,17 @@ async function getUserByEmail(email) {
   return result[0];  
 };
 
+async function deleteUser(id) {
+  const result = await db.query(`
+  DELETE FROM users WHERE id = ?;
+  `, [id])
+  return result;
+}
+
 module.exports = {
   getAllUsers,
   getNonAdminUsers,
   createUser,
-  getUserByEmail
+  getUserByEmail,
+  deleteUser
 };

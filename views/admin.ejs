@@ -3,14 +3,51 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
   <title>Document</title>
 </head>
 <body>
   <h1>Admin</h1> 
+  <% if (success_msg.length > 0) { %>
+    <div class="" id="success-msg">
+      <div class="notification is-primary is-light">
+        <button class="delete"></button>
+        <%= success_msg %>
+      </div>
+    </div>
+  <% } %>
   <% if (users.length > 0) { %>
     <% users.forEach(user => { %>
-      <div><%= user.firstName %> <%= user.lastName %> <%= user.email %> <%= user.phone %></div>
+      <div>
+        <%= user.firstName %> 
+        <%= user.lastName %> 
+        <%= user.email %> 
+        <%= user.phone %>
+        <form action="/api/delete-user/<%= user.id %>" method="POST">
+          <button class="button is-danger is-outlined">
+            Delete
+          </button>
+        </form>
+      </div>
     <% }) %>
   <% } %>
 </body>
 </html>
+
+<script>
+document.addEventListener('DOMContentLoaded', (event) => {
+  const delErrMsg = () => {
+    const errorMsg = document.querySelector("#success-msg").remove();
+
+    if (errorMsg) {
+      errorMsg.remove;
+    }
+  };
+
+  const deleteButton = document.querySelector(".delete");
+
+  if (deleteButton) {
+    deleteButton.addEventListener("click", delErrMsg);
+  }
+});
+</script>

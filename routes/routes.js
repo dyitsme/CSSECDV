@@ -8,11 +8,12 @@ const router = express.Router();
 
 router.get("/login", session.isNotAuthenticated, loginController.loginView);
 router.get("/register", session.isNotAuthenticated, loginController.registerView);
+router.get("/", session.isAuthenticated, homeController.homeView);
+router.get("/admin", session.isAuthenticated, adminController.adminView);
+
 router.get("/api/users", loginController.getAllUsers);
 router.post("/api/create-user", loginController.createUser);
 router.post("/api/login", loginController.loginUser);
-
-router.get("/", session.isAuthenticated, homeController.homeView);
-router.get("/admin", session.isAuthenticated, adminController.adminView);
+router.post("/api/delete-user/:id", adminController.deleteUser);
 
 module.exports = router;
