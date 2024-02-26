@@ -13,7 +13,7 @@ async function getAllUsers() {
   return rows;
 };
 
-async function getUsersOnly() {
+async function getNonAdminUsers() {
   const [rows] = await db.query(`SELECT * FROM users WHERE isAdmin = 0`);
   return rows;
 }
@@ -37,7 +37,7 @@ async function getUserByEmail(email) {
 
 module.exports = {
   getAllUsers,
-  getUsersOnly,
+  getNonAdminUsers,
   createUser,
   getUserByEmail
 };
