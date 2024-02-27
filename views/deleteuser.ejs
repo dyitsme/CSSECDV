@@ -3,17 +3,27 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
   <title>Document</title>
 </head>
 <body>
   <div>
-    Delete User <%= user.firstName %> <%= user.lastName %>
-    <form action="/api/delete-user/<%= user.id %>" method="POST">
-      <button class="button is-danger is-outlined">
-        Delete
-      </button>
-    </form>
-    <a href="/admin">Cancel</a>
+    <div class="columns is-mobile is-centered">
+      <div class="column is-half box">
+        <header class="is-size-3 has-text-weight-bold block">Delete User</header>
+        <div class="block">
+          Are you sure you want to delete user <%= user.firstName %> <%= user.lastName %>Are you sure you want to delete user <%= user.firstName %> <%= user.lastName %>.
+        </div>
+        <div class="buttons block">
+          <form action="/api/delete-user/<%= user.id %>" method="POST">
+            <button class="button is-danger">
+              Delete
+            </button>
+          </form>
+          <a href="/admin" class="button is-light">Cancel</a>
+        </div>
+      </div>
+    </div>
   </div>
 </body>
 </html>
