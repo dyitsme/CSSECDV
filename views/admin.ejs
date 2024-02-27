@@ -23,6 +23,8 @@
         <%= user.lastName %> 
         <%= user.email %> 
         <%= user.phone %>
+        <%= user.isAdmin %>
+        <a href="/delete-user/<%= user.id %>">Go to delete</a>
         <form action="/api/delete-user/<%= user.id %>" method="POST">
           <button class="button is-danger is-outlined">
             Delete

@@ -2,15 +2,22 @@ const db = require("../models/db");
 
 const adminView = async (req, res) => {
   const success_msg = await req.flash("success_msg");
-  const users = await db.getNonAdminUsers();
+  const users = await db.getAllUsers();
   res.render("admin", { users, success_msg: success_msg });
+};
+
+const deleteUserView = async (req, res) => {
+  const id = req.params.id;
+  const user = await db.getUserById(id);
+  console.log(user);
+  res.render("deleteuser", { user });
 };
 
 const deleteUser = async (req, res) => {
   const id = req.params.id;
-  const result = await db.deleteUser(id);
+  const result = await db.deleteUserById(id);
   if (result) {
-    req.flash("success_msg", `Successfully deleted user`);
+    req.flash("success_msg", "Successfully deleted user");
     res.redirect("/admin");
   }
 };
@@ -18,5 +25,6 @@ const deleteUser = async (req, res) => {
 
 module.exports = {
   adminView,
+  deleteUserView,
   deleteUser
 };
