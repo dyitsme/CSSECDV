@@ -52,7 +52,6 @@ const loginUser = async (req, res) => {
       // res.json(req.session);
       console.log('session: ',res.req.sessionID);
       //res.status(200).json({message: "Successful Login", status: 200, data: res.req.sessionID});
-      console.log(user.isAdmin);
       if (user.isAdmin == 1) {
         res.redirect("/admin");
       }
