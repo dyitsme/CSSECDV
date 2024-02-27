@@ -22,9 +22,47 @@ const deleteUser = async (req, res) => {
   }
 };
 
+const deactivateUserView = async (req, res) => {
+  const id = req.params.id;
+  const user = await db.getUserById(id);
+  console.log(user);
+  res.render("deactivateuser", { user });
+
+};
+
+const activateUserView = async (req, res) => {
+  const id = req.params.id;
+  const user = await db.getUserById(id);
+  console.log(user);
+  res.render("activateuser", { user });
+};
+
+const deactivateUser = async (req, res) => {
+  const id = req.params.id;
+  const result = await db.deactivateUserById(id);
+  console.log(result);
+  if (result) {
+    req.flash("success_msg", "Successfully deactivated user");
+    res.redirect("/admin");
+  }
+};
+
+const activateUser = async (req, res) => {
+  const id = req.params.id;
+  const result = await db.activateUserById(id);
+  console.log(result);
+  if (result) {
+    req.flash("success_msg", "Successfully activated user");
+    res.redirect("/admin");
+  }
+};
 
 module.exports = {
   adminView,
   deleteUserView,
-  deleteUser
+  deleteUser,
+  deactivateUserView,
+  activateUserView,
+  deactivateUser,
+  activateUser
 };

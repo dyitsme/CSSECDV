@@ -50,11 +50,31 @@ async function getUserById(id) {
   return result[0];  
 }
 
+async function deactivateUserById(id) {
+  const result = await db.query(`
+  UPDATE users
+  SET status = 'deactivated'
+  WHERE id = ?;
+  `, [id])
+  return result;
+}
+
+async function activateUserById(id) {
+  const result = await db.query(`
+  UPDATE users
+  SET status = 'activated'
+  WHERE id = ?;
+  `, [id])
+  return result;
+}
+
 module.exports = {
   getAllUsers,
   createUser,
   getUserByEmail,
   deleteUserById,
   getNonAdminUsers,
-  getUserById
+  getUserById,
+  deactivateUserById,
+  activateUserById
 };

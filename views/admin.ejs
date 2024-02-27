@@ -24,6 +24,12 @@
         <%= user.email %> 
         <%= user.phone %>
         <%= user.isAdmin %>
+        <% if (user.status == "activated") { %>
+          <a href="/deactivate-user/<%= user.id%>">Go to deactivate</a>
+        <% } %>
+        <% if (user.status == "deactivated") { %>
+          <a href="/activate-user/<%= user.id%>">Go to activate</a>
+        <% } %>
         <a href="/delete-user/<%= user.id %>">Go to delete</a>
       </div>
     <% }) %>
