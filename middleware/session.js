@@ -8,6 +8,24 @@ const isAuthenticated = (req, res, next) => {
   }
 };
 
+const isAuthenticatedAdmin = (req, res, next) => {
+  if (req.session && req.session.user) {
+    if (req.session.user.isAdmin) {
+      if (req.session.user.isAdmin == 1) {
+        next();
+      }
+    }
+    else {
+      console.log("message: Not an admin");
+      res.redirect("/");
+    }
+  } else {
+    // res.status(400).json({ message: "No credentials provided" });
+    console.log("message: No credentials provided");
+    res.redirect("/login")
+  }
+}
+
 const isNotAuthenticated = (req, res, next) => {
   if (req.session && req.session.user) {
     res.redirect("/");
@@ -18,5 +36,6 @@ const isNotAuthenticated = (req, res, next) => {
 
 module.exports = {
   isAuthenticated,
+  isAuthenticatedAdmin,
   isNotAuthenticated
 };
