@@ -1,5 +1,6 @@
 {
   "scripts": {
+    "start": "nodemon app.js",
     "test": "jest"
   },
   "dependencies": {
