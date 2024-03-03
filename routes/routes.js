@@ -17,6 +17,9 @@ router.get("/deactivate-user/:id", session.isAuthenticated, adminController.deac
 router.get("/activate-user/:id", session.isAuthenticated, adminController.activateUserView);
 
 
+// post routes
+router.get("/create-post", postController.createPostView);
+
 // user api routes
 router.get("/api/users", session.isAuthenticatedAdmin, loginController.getAllUsers);
 router.post("/api/create-user", session.isNotAuthenticated, loginController.createUser);
@@ -26,7 +29,7 @@ router.post("/api/delete-user/:id", session.isAuthenticated, adminController.del
 router.post("/api/deactivate-user/:id", session.isAuthenticated, adminController.deactivateUser);
 router.post("/api/activate-user/:id", session.isAuthenticated, adminController.activateUser);
 
-// blog api routes
-router.post('/api/create-blog', postController.createPost)
+// post api routes
+router.post("/api/create-post", postController.createPost)
 
 module.exports = router;
