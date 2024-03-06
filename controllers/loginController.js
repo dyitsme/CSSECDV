@@ -43,6 +43,7 @@ const loginUser = async (req, res) => {
       console.log('result: ', req?.session)
       req.session.authenticated = true;
       req.session.user = { 
+        userId: user.id,
         firstName: user.firstName,
         lastName: user.lastName,
         email: user.email,

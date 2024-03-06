@@ -5,7 +5,8 @@ const createPostView = async (req, res) => {
 };
 
 const createPost = async (req, res) => {
-  const { userId, title, content, img, docu } = req.body
+  const userId = req.session.user.userId;
+  const { title, content, img, docu } = req.body
   const response = await post.createPost(userId, title, content, img, docu);
   res.json(response);
 };
