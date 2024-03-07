@@ -5,6 +5,8 @@ const adminController = require("../controllers/adminController");
 const postController = require("../controllers/postController");
 const session = require("../middleware/session");
 
+const { postFileUpload } = require("../middleware/fileUpload");
+
 const router = express.Router();
 
 // main routes
@@ -18,7 +20,7 @@ router.get("/activate-user/:id", session.isAuthenticated, adminController.activa
 
 
 // post routes
-router.get("/create-post", postController.createPostView);
+router.get("/create-post", session.isAuthenticated, postController.createPostView);
 
 // user api routes
 router.get("/api/users", session.isAuthenticatedAdmin, loginController.getAllUsers);
@@ -30,6 +32,7 @@ router.post("/api/deactivate-user/:id", session.isAuthenticated, adminController
 router.post("/api/activate-user/:id", session.isAuthenticated, adminController.activateUser);
 
 // post api routes
-router.post("/api/create-post", postController.createPost)
+const postUploads = postFileUpload.fields([{ name: "image", maxCount: 1 }, { name: "docu", maxCount: 1 }]);
+router.post("/api/create-post", postUploads, postController.createPost);
 
 module.exports = router;

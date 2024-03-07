@@ -11,7 +11,7 @@
   <div class="block is-size-2">
     Create post
   </div>
-  <form action="/api/create-post" method="post">
+  <form action="/api/create-post" method="post" enctype="multipart/form-data">
     <div class="field">
       <div class="control">
         <input class="input" type="text" name="title" id="" placeholder="Title">
@@ -25,13 +25,13 @@
     <div class="field">
       <label class="label">Upload image</label>
       <div class="control">
-        <input class="input" type="file" name="img" id="">
+        <input class="input" type="file" accept="image/png, image/jpeg" name="image" id="">
       </div>
     </div>
     <div class="field">
       <label class="label">Upload document</label>
       <div class="control">
-        <input class="input" type="file" name="docu" id="">
+        <input class="input type="file" accept="application/pdf" name="docu" id="">
       </div>
     </div>
     <button class="button is-link" type="submit">Publish</button>
