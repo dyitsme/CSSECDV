@@ -33,7 +33,7 @@ const imgFilter = (req, file, cb) => {
   const allowedTypes = ['image/jpeg', 'image/jpg', 'image/png'];
 
   if (!allowedTypes.includes(file.mimetype)) {
-    console.log("imgFilter: File is not accepted!")
+    console.log("imgFilter  : File is not accepted!")
     cb(null, false);
   }
   cb(null, true);

@@ -1,4 +1,4 @@
-const post = require("../models/post");
+const Post = require("../models/post");
 
 const createPostView = async (req, res) => {
   res.render("createpost");
@@ -19,7 +19,7 @@ const createPost = async (req, res) => {
 
 
   const { title, content } = req.body;
-  const response = await post.createPost(userId, title, content, image, docu);
+  const response = await Post.createPost(userId, title, content, image, docu);
   if (response) {
     res.redirect("/");
   }

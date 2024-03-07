@@ -33,6 +33,6 @@ router.post("/api/activate-user/:id", session.isAuthenticated, adminController.a
 
 // post api routes
 const postUploads = postFileUpload.fields([{ name: "image", maxCount: 1 }, { name: "docu", maxCount: 1 }]);
-router.post("/api/create-post", postUploads, postController.createPost);
+router.post("/api/create-post", session.isAuthenticated, postUploads, postController.createPost);
 
 module.exports = router;

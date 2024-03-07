@@ -14,8 +14,21 @@ async function createPost(userId, title, content, img, docu) {
     VALUES (?, ?, ?, CURRENT_TIMESTAMP, ?, ?)
     `, [userId, title, content, img, docu]);
   return result;
-};
+}
+
+async function getAllPosts() {
+  const [rows] = await db.query(`SELECT * FROM posts`);
+  return rows;
+}
+
+async function deletePostByid(id) {
+  const result = await db.query(`
+  DELETE FROM posts WHERE id = ?;
+  `, [id])
+  return result;
+}
 
 module.exports = {
-  createPost
+  createPost,
+  getAllPosts
 }

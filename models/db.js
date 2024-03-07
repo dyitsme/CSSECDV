@@ -11,7 +11,7 @@ const db  = mysql.createPool({
 async function getAllUsers() {
   const [rows] = await db.query(`SELECT * FROM users`);
   return rows;
-};
+}
 
 async function getNonAdminUsers() {
   const [rows] = await db.query(`SELECT * FROM users WHERE isAdmin = 0`);
@@ -25,7 +25,7 @@ async function createUser(firstName, lastName, email, phone, password, img) {
     `, [firstName, lastName, email, phone, password, img]);
   return result;
 
-};
+}
 
 async function getUserByEmail(email) {
   const [result] = await db.query(`
@@ -33,7 +33,7 @@ async function getUserByEmail(email) {
     WHERE email = ?
   `, [email])
   return result[0];  
-};
+}
 
 async function deleteUserById(id) {
   const result = await db.query(`

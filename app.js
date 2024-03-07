@@ -6,6 +6,7 @@ const session = require('express-session');
 const MySQLStore = require('express-mysql-session')(session);
 const rateLimit = require('express-rate-limit');
 const { loginUser } = require('./controllers/loginController');
+const path = require('path');
 
 const app = express();
 
@@ -23,7 +24,8 @@ const options = {
 
 const sessionStore = new MySQLStore(options);
 
-app.use(express.static('public'));
+app.use("/postUploads", express.static(path.join(__dirname, "public/postUploads")));
+app.use("/profileUploads", express.static(path.join(__dirname, "public/profileUploads")));
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 

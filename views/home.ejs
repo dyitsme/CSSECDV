@@ -9,5 +9,16 @@
 <body>
   <%- include('./partials/nav.ejs') %>
   Home
+  <% if (posts.length > 0) { %>
+    <% posts.forEach(post => { %>
+      <div>
+        <%= post.id %>
+        <%= post.title %>
+        <%= post.date %>
+        <img src="<%= "postUploads/" + JSON.parse(post.img).filename %>">
+
+      </div>
+    <%}) %>
+  <% } %>
 </body>
 </html>
