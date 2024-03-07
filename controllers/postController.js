@@ -18,9 +18,11 @@ const createPost = async (req, res) => {
   });
 
 
-  const { title, content } = req.body
+  const { title, content } = req.body;
   const response = await post.createPost(userId, title, content, image, docu);
-  res.json(response);
+  if (response) {
+    res.redirect("/");
+  }
 };
 
 module.exports = {
