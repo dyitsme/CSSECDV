@@ -17,6 +17,7 @@ router.get("/admin", session.isAuthenticatedAdmin, adminController.adminView);
 router.get("/delete-user/:id", session.isAuthenticated, adminController.deleteUserView);
 router.get("/deactivate-user/:id", session.isAuthenticated, adminController.deactivateUserView);
 router.get("/activate-user/:id", session.isAuthenticated, adminController.activateUserView);
+router.get("/delete-post/:id", session.isAuthenticated, postController.deletePostView);
 
 
 // post routes
@@ -34,5 +35,6 @@ router.post("/api/activate-user/:id", session.isAuthenticated, adminController.a
 // post api routes
 const postUploads = postFileUpload.fields([{ name: "image", maxCount: 1 }, { name: "docu", maxCount: 1 }]);
 router.post("/api/create-post", session.isAuthenticated, postUploads, postController.createPost);
+router.post("/api/delete-post/:id", postController.deletePost);
 
 module.exports = router;

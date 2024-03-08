@@ -21,7 +21,26 @@ async function getAllPosts() {
   return rows;
 }
 
-async function deletePostByid(id) {
+async function getPostById(id) {
+  const [result] = await db.query(`
+  SELECT * FROM posts WHERE id = ?;
+  `, [id])
+  return result[0];
+}
+
+async function editPostById(title, content, img, docu, id) {
+  const result = await db.query(`
+  UPDATE posts
+  SET title = ?,
+  content = ?,
+  img = ?,
+  docu = ?
+  WHERE id = ?;
+  `, [title, content, img, docu, id])
+  return result;
+}
+
+async function deletePostById(id) {
   const result = await db.query(`
   DELETE FROM posts WHERE id = ?;
   `, [id])
@@ -30,5 +49,8 @@ async function deletePostByid(id) {
 
 module.exports = {
   createPost,
-  getAllPosts
+  getAllPosts,
+  getPostById,
+  editPostById,
+  deletePostById
 }

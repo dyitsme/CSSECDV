@@ -25,7 +25,38 @@ const createPost = async (req, res) => {
   }
 };
 
+const updatePostView = async (req, res) => {
+  // retrieve data from db by id
+  // pass it onto the view
+};
+
+const updatePost = async (req, res) => {
+  // get the data from the view by post
+  // 
+
+};
+
+const deletePostView = async (req, res) => {
+  const id = req.params.id;
+  const post = await Post.getPostById(id);
+  console.log(post);
+  res.render("deletepost", { post });
+};
+
+const deletePost = async (req, res) => {
+  const id = req.params.id;
+  const result = await Post.deletePostById(id);
+  if (result) {
+    req.flash("success_msg", "Successfully deleted post");
+    res.redirect("/");
+  }
+};
+
 module.exports = {
   createPostView,
-  createPost
+  createPost,
+  updatePostView,
+  updatePost,
+  deletePostView,
+  deletePost
 };

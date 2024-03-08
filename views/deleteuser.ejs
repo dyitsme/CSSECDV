@@ -12,7 +12,7 @@
       <div class="column is-half box">
         <header class="is-size-3 has-text-weight-bold block">Delete User</header>
         <div class="block">
-          AAre you sure you want to delete user <%= user.firstName %> <%= user.lastName %>.
+          Are you sure you want to delete user <%= user.firstName %> <%= user.lastName %>.
         </div>
         <div class="buttons block">
           <form action="/api/delete-user/<%= user.id %>" method="POST">
@@ -20,7 +20,7 @@
               Delete
             </button>
           </form>
-          <a href="/admin" class="button is-light">Cancel</a>
+          <a href="/" class="button is-light">Cancel</a>
         </div>
       </div>
     </div>
