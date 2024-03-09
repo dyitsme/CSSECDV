@@ -28,11 +28,33 @@ const createPost = async (req, res) => {
 const updatePostView = async (req, res) => {
   // retrieve data from db by id
   // pass it onto the view
+  const id = req.params.id;
+  const post = await Post.getPostById(id);
+  res.render("editpost", { post });
 };
 
 const updatePost = async (req, res) => {
   // get the data from the view by post
-  // 
+  // if no files have been selected dont overwrite file 
+  const id = req.params.id;
+  const { title, content } = req.body;
+  
+  const image = JSON.stringify({
+   filename: req.files["image"][0].filename,
+   path: req.files["image"][0].path
+  });
+
+  const docu = JSON.stringify({
+   filename: req.files["docu"][0].filename,
+   path: req.files["docu"][0].path
+  });
+
+  const result = await Post.editPostById(id, title, content, image, docu);
+  console.log(result);
+  if (result) {
+    req.flash("success_msg", "Successfully updated post");
+    res.redirect("/");
+  }
 
 };
 

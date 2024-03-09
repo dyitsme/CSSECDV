@@ -28,7 +28,8 @@ async function getPostById(id) {
   return result[0];
 }
 
-async function editPostById(title, content, img, docu, id) {
+async function editPostById(id, title, content, img, docu) {
+
   const result = await db.query(`
   UPDATE posts
   SET title = ?,

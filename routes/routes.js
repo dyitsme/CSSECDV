@@ -8,6 +8,7 @@ const session = require("../middleware/session");
 const { postFileUpload } = require("../middleware/fileUpload");
 
 const router = express.Router();
+const postUploads = postFileUpload.fields([{ name: "image", maxCount: 1 }, { name: "docu", maxCount: 1 }]);
 
 // main routes
 router.get("/login", session.isNotAuthenticated, loginController.loginView);
@@ -17,6 +18,7 @@ router.get("/admin", session.isAuthenticatedAdmin, adminController.adminView);
 router.get("/delete-user/:id", session.isAuthenticated, adminController.deleteUserView);
 router.get("/deactivate-user/:id", session.isAuthenticated, adminController.deactivateUserView);
 router.get("/activate-user/:id", session.isAuthenticated, adminController.activateUserView);
+router.get("/edit-post/:id", session.isAuthenticated, postController.updatePostView);
 router.get("/delete-post/:id", session.isAuthenticated, postController.deletePostView);
 
 
@@ -33,8 +35,8 @@ router.post("/api/deactivate-user/:id", session.isAuthenticated, adminController
 router.post("/api/activate-user/:id", session.isAuthenticated, adminController.activateUser);
 
 // post api routes
-const postUploads = postFileUpload.fields([{ name: "image", maxCount: 1 }, { name: "docu", maxCount: 1 }]);
 router.post("/api/create-post", session.isAuthenticated, postUploads, postController.createPost);
-router.post("/api/delete-post/:id", postController.deletePost);
+router.post("/api/edit-post/:id", session.isAuthenticated, postUploads, postController.updatePost);
+router.post("/api/delete-post/:id", session.isAuthenticated, postController.deletePost);
 
 module.exports = router;

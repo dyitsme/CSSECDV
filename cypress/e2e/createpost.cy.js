@@ -1,7 +1,7 @@
 describe("createpost", () => {
   const loginurl = "http://localhost:3000/login";
   const posturl = "http://localhost:3000/create-post"
-  it("passes", () => {
+  it("valid post", () => {
     cy.visit(loginurl);
 
     cy.get("#email").type("lea_aromin@dlsu.edu.ph");
