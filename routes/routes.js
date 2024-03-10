@@ -10,13 +10,17 @@ const { postFileUpload } = require("../middleware/fileUpload");
 const router = express.Router();
 const postUploads = postFileUpload.fields([{ name: "image", maxCount: 1 }, { name: "docu", maxCount: 1 }]);
 
-// main routes
+// login routes
 router.get("/login", session.isNotAuthenticated, loginController.loginView);
 router.get("/register", session.isNotAuthenticated, loginController.registerView);
 router.get("/", session.isAuthenticated, homeController.homeView);
+
+// admin routes
 router.get("/admin", session.isAuthenticatedAdmin, adminController.adminView);
 router.get("/delete-user/:id", session.isAuthenticatedAdmin, adminController.deleteUserView);
 router.get("/deactivate-user/:id", session.isAuthenticatedAdmin, adminController.deactivateUserView);
+router.get("/delete-post-admin/:id", session.isAuthenticatedAdmin, adminController.deleteUser);
+
 router.get("/activate-user/:id", session.isAuthenticatedAdmin, adminController.activateUserView);
 router.get("/edit-post/:id", session.isAuthenticated, postController.updatePostView);
 router.get("/delete-post/:id", session.isAuthenticated, postController.deletePostView);
