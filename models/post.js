@@ -28,6 +28,14 @@ async function getPostById(id) {
   return result[0];
 }
 
+async function getUserPostById(id, userId) {
+  const [result] = await db.query(`
+  SELECT * FROM posts WHERE id = ? AND userId = ?;
+  `, [id, userId])
+  return result[0];
+
+}
+
 async function editPostById(id, title, content, img, docu) {
 
   const result = await db.query(`
@@ -52,6 +60,7 @@ module.exports = {
   createPost,
   getAllPosts,
   getPostById,
+  getUserPostById,
   editPostById,
   deletePostById
 }
