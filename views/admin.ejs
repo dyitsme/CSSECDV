@@ -8,6 +8,84 @@
 </head>
 <body>
   <%- include('./partials/nav.ejs') %>
-  Admin 
+  <div class="block">
+  <% if (success_msg.length > 0) { %>
+    <div class="" id="success-msg">
+      <div class="notification is-primary is-light">
+        <button class="delete"></button>
+        <%= success_msg %>
+      </div>
+    </div>
+  <% } %>
+  </div>
+  
+  <div class="block is-size-2">
+    Users
+  </div>
+
+  <div class="block">
+    <table class="table is-fullwidth">
+      <thead class="has-background-light">
+        <tr>
+          <td>First Name</td>
+          <td>Last Name</td>
+          <td>Email</td>
+          <td>Phone No.</td>
+          <td>Status</td>
+          <td></td>
+        </tr>
+      </thead>
+      <tbody>
+      <% if (users.length > 0) { %>
+        <% users.forEach(user => { %>
+          <tr>
+            <td><%= user.firstName %></td>
+            <td><%= user.lastName %></td>
+            <td><%= user.email %></td>
+            <td><%= user.phone %></td>
+            <td>
+              <% if (user.status == "activated") { %>
+                <span class="tag is-success is-light"><%= user.status %></span>
+              <% } %>
+              <% if (user.status == "deactivated") { %>
+                <span class="tag is-light"><%= user.status %></span>
+              <% } %>
+
+            </td>
+            <td>
+              <% if (user.status == "activated") { %>
+                <a class="button is-light" href="/deactivate-user/<%= user.id%>">Go to deactivate</a>
+              <% } %>
+              <% if (user.status == "deactivated") { %>
+                <a class="button is-light" href="/activate-user/<%= user.id%>">Go to activate</a>
+              <% } %>
+              <a class="button is-light" href="/delete-user/<%= user.id %>">Go to delete</a>
+            </td>
+          </tr>
+        <% }) %>
+      <% } %>
+      </tbody>
+
+    </table>
+
+  </div>
 </body>
 </html>
+
+<script>
+document.addEventListener('DOMContentLoaded', (event) => {
+  const delErrMsg = () => {
+    const errorMsg = document.querySelector("#success-msg").remove();
+
+    if (errorMsg) {
+      errorMsg.remove;
+    }
+  };
+
+  const deleteButton = document.querySelector(".delete");
+
+  if (deleteButton) {
+    deleteButton.addEventListener("click", delErrMsg);
+  }
+});
+</script>

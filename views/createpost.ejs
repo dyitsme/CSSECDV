@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
+  <title>Document</title>
+</head>
+<body>
+  <%- include('./partials/nav.ejs') %>
+    <div class="block is-size-2">
+      Create post
+    </div>
+    <form action="/api/create-post" method="post" enctype="multipart/form-data">
+      <div class="field">
+        <div class="control">
+          <input class="input" type="text" name="title" id="title" placeholder="Title">
+        </div>
+      </div>
+      <div class="field">
+        <div class="control">
+          <textarea class="textarea" name="content" id="content" placeholder="Content"></textarea>
+        </div>
+      </div>
+      <div class="field">
+        <label class="label">Upload image</label>
+        <div class="control">
+          <input class="input" type="file" accept="image/png, image/jpeg" name="image" id="image">
+        </div>
+      </div>
+      <div class="field">
+        <label class="label">Upload document</label>
+        <div class="control">
+          <input class="input" type="file" accept="application/pdf" name="docu" id="docu">
+        </div>
+      </div>
+      <button class="button is-link" id="post" type="submit">Post</button>
+    </form>
+</body>
+</html>

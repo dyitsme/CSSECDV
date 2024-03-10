@@ -11,7 +11,12 @@ const db  = mysql.createPool({
 async function getAllUsers() {
   const [rows] = await db.query(`SELECT * FROM users`);
   return rows;
-};
+}
+
+async function getNonAdminUsers() {
+  const [rows] = await db.query(`SELECT * FROM users WHERE isAdmin = 0`);
+  return rows;
+}
 
 async function createUser(firstName, lastName, email, phone, password, img) {
   const result = await db.query(`
@@ -20,7 +25,7 @@ async function createUser(firstName, lastName, email, phone, password, img) {
     `, [firstName, lastName, email, phone, password, img]);
   return result;
 
-};
+}
 
 async function getUserByEmail(email) {
   const [result] = await db.query(`
@@ -28,10 +33,48 @@ async function getUserByEmail(email) {
     WHERE email = ?
   `, [email])
   return result[0];  
-};
+}
+
+async function deleteUserById(id) {
+  const result = await db.query(`
+  DELETE FROM users WHERE id = ?;
+  `, [id])
+  return result;
+}
+
+async function getUserById(id) {
+  const [result] = await db.query(`
+    SELECT * FROM cssecdv.users
+    WHERE id = ?
+  `, [id])
+  return result[0];  
+}
+
+async function deactivateUserById(id) {
+  const result = await db.query(`
+  UPDATE users
+  SET status = 'deactivated'
+  WHERE id = ?;
+  `, [id])
+  return result;
+}
+
+async function activateUserById(id) {
+  const result = await db.query(`
+  UPDATE users
+  SET status = 'activated'
+  WHERE id = ?;
+  `, [id])
+  return result;
+}
 
 module.exports = {
   getAllUsers,
   createUser,
-  getUserByEmail
+  getUserByEmail,
+  deleteUserById,
+  getNonAdminUsers,
+  getUserById,
+  deactivateUserById,
+  activateUserById
 };
