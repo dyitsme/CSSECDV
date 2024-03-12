@@ -10,12 +10,12 @@
   <div>
     <div class="columns is-mobile is-centered">
       <div class="column is-half box">
-        <header class="is-size-3 has-text-weight-bold block">Delete User</header>
+        <header class="is-size-3 has-text-weight-bold block">Delete post</header>
         <div class="block">
-          Are you sure you want to delete user <%= user.firstName %> <%= user.lastName %>.
+          Are you sure you want to delete post <%= post.title %>
         </div>
         <div class="buttons block">
-          <form action="/api/delete-user/<%= user.id %>" method="POST">
+          <form action="/api/delete-post-admin/<%= post.id %>" method="POST">
             <button class="button is-danger">
               Delete
             </button>

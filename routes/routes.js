@@ -19,7 +19,7 @@ router.get("/", session.isAuthenticated, homeController.homeView);
 router.get("/admin", session.isAuthenticatedAdmin, adminController.adminView);
 router.get("/delete-user/:id", session.isAuthenticatedAdmin, adminController.deleteUserView);
 router.get("/deactivate-user/:id", session.isAuthenticatedAdmin, adminController.deactivateUserView);
-router.get("/delete-post-admin/:id", session.isAuthenticatedAdmin, adminController.deleteUser);
+router.get("/delete-post-admin/:id", session.isAuthenticatedAdmin, adminController.deletePostAdminView);
 
 router.get("/activate-user/:id", session.isAuthenticatedAdmin, adminController.activateUserView);
 router.get("/edit-post/:id", session.isAuthenticated, postController.updatePostView);
@@ -42,5 +42,6 @@ router.post("/api/activate-user/:id", session.isAuthenticatedAdmin, adminControl
 router.post("/api/create-post", session.isAuthenticated, postUploads, postController.createPost);
 router.post("/api/edit-post/:id", session.isAuthenticated, postUploads, postController.updatePost);
 router.post("/api/delete-post/:id", session.isAuthenticated, postController.deletePost);
+router.post("/api/delete-post-admin/:id", session.isAuthenticatedAdmin, adminController.deletePost);
 
 module.exports = router;

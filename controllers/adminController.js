@@ -68,6 +68,13 @@ const deletePost = async (req, res) => {
   }
 }
 
+const deletePostAdminView = async (req, res) => {
+  const id = req.params.id;
+  const post = await Post.getPostById(id);
+  console.log(post)
+  res.render("deletepostadmin", { post });
+}
+
 module.exports = {
   adminView,
   deleteUserView,
@@ -75,5 +82,7 @@ module.exports = {
   deactivateUserView,
   activateUserView,
   deactivateUser,
-  activateUser
+  activateUser,
+  deletePost,
+  deletePostAdminView
 };
