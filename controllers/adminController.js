@@ -1,9 +1,11 @@
 const db = require("../models/db");
+const Post = require("../models/post");
 
 const adminView = async (req, res) => {
   const success_msg = await req.flash("success_msg");
   const users = await db.getAllUsers();
-  res.render("admin", { users, success_msg: success_msg });
+  const posts = await Post.getAllPosts();
+  res.render("admin", { users, posts, success_msg: success_msg });
 };
 
 const deleteUserView = async (req, res) => {
@@ -57,6 +59,22 @@ const activateUser = async (req, res) => {
   }
 };
 
+const deletePost = async (req, res) => {
+  const id = req.params.id;
+  const result = await Post.deletePostById(id);
+  if (result) {
+    req.flash("success_msg", "Successfully deleted post");
+    res.redirect("/admin");
+  }
+}
+
+const deletePostAdminView = async (req, res) => {
+  const id = req.params.id;
+  const post = await Post.getPostById(id);
+  console.log(post)
+  res.render("deletepostadmin", { post });
+}
+
 module.exports = {
   adminView,
   deleteUserView,
@@ -64,5 +82,7 @@ module.exports = {
   deactivateUserView,
   activateUserView,
   deactivateUser,
-  activateUser
+  activateUser,
+  deletePost,
+  deletePostAdminView
 };

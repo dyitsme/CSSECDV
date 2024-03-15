@@ -19,56 +19,91 @@
   <% } %>
   </div>
   
-  <div class="block is-size-2">
-    Users
+  <div class="tabs is-boxed">
+    <ul>
+      <li class="is-active" data-target="user-details">
+        <a>Users</a> 
+      </li>
+      <li data-target="post-details">
+        <a>Posts</a>
+      </li>
+    </ul>
   </div>
-
-  <div class="block">
-    <table class="table is-fullwidth">
-      <thead class="has-background-light">
-        <tr>
-          <td>First Name</td>
-          <td>Last Name</td>
-          <td>Email</td>
-          <td>Phone No.</td>
-          <td>Status</td>
-          <td></td>
-        </tr>
-      </thead>
-      <tbody>
-      <% if (users.length > 0) { %>
-        <% users.forEach(user => { %>
+  <div id="tab-content">
+    <div id="user-details">
+      <table class="table is-fullwidth">
+        <thead class="has-background-light">
           <tr>
-            <td><%= user.firstName %></td>
-            <td><%= user.lastName %></td>
-            <td><%= user.email %></td>
-            <td><%= user.phone %></td>
-            <td>
-              <% if (user.status == "activated") { %>
-                <span class="tag is-success is-light"><%= user.status %></span>
-              <% } %>
-              <% if (user.status == "deactivated") { %>
-                <span class="tag is-light"><%= user.status %></span>
-              <% } %>
-
-            </td>
-            <td>
-              <% if (user.status == "activated") { %>
-                <a class="button is-light" href="/deactivate-user/<%= user.id%>">Go to deactivate</a>
-              <% } %>
-              <% if (user.status == "deactivated") { %>
-                <a class="button is-light" href="/activate-user/<%= user.id%>">Go to activate</a>
-              <% } %>
-              <a class="button is-light" href="/delete-user/<%= user.id %>">Go to delete</a>
-            </td>
+            <td>First Name</td>
+            <td>Last Name</td>
+            <td>Email</td>
+            <td>Phone No.</td>
+            <td>Status</td>
+            <td></td>
           </tr>
-        <% }) %>
-      <% } %>
-      </tbody>
+        </thead>
+        <tbody>
+        <% if (users.length > 0) { %>
+          <% users.forEach(user => { %>
+            <tr>
+              <td><%= user.firstName %></td>
+              <td><%= user.lastName %></td>
+              <td><%= user.email %></td>
+              <td><%= user.phone %></td>
+              <td>
+                <% if (user.status == "activated") { %>
+                  <span class="tag is-success is-light"><%= user.status %></span>
+                <% } %>
+                <% if (user.status == "deactivated") { %>
+                  <span class="tag is-light"><%= user.status %></span>
+                <% } %>
 
-    </table>
+              </td>
+              <td>
+                <% if (user.status == "activated") { %>
+                  <a class="button is-light" href="/deactivate-user/<%= user.id%>">Go to deactivate</a>
+                <% } %>
+                <% if (user.status == "deactivated") { %>
+                  <a class="button is-light" href="/activate-user/<%= user.id%>">Go to activate</a>
+                <% } %>
+                <a class="button is-light" href="/delete-user/<%= user.id %>">Go to delete</a>
+              </td>
+            </tr>
+          <% }) %>
+        <% } %>
+        </tbody>
+
+      </table>
+
+    </div>
+    <div id="post-details" class="is-hidden">
+      <table class="table is-fullwidth">
+        <thead class="has-background-light">
+          <tr>
+            <td>User</td>
+            <td>Title</td>
+            <td>Date</td>
+          </tr>
+        </thead>
+        <tbody>
+        <% if (posts.length > 0) { %>
+          <% posts.forEach(post => { %>
+            <tr>
+              <td><%= post.userId %></td>
+              <td><%= post.title %></td>
+              <td><%= post.date %></td>
+              <td>
+                <a class="button is-light" href="/delete-post-admin/<%= post.id %>">Go to delete</a>
+              </td>
+            </tr>
+          <% }) %>
+        <% } %>
+        </tbody>
+      </table>
+    </div>
 
   </div>
+
 </body>
 </html>
 
@@ -88,4 +123,24 @@ document.addEventListener('DOMContentLoaded', (event) => {
     deleteButton.addEventListener("click", delErrMsg);
   }
 });
+
+const tabs = document.querySelectorAll('.tabs li');
+const tabContentBoxes = document.querySelectorAll('#tab-content > div');
+
+tabs.forEach(tab => {
+  tab.addEventListener('click', () => {
+    tabs.forEach(item => item.classList.remove('is-active'));
+    tab.classList.add('is-active');
+
+    const target = tab.dataset.target;
+    // console.log(target);
+    tabContentBoxes.forEach(box => {
+      if (box.getAttribute('id') === target) {
+        box.classList.remove('is-hidden');
+      } else {
+        box.classList.add('is-hidden');
+      }
+    })
+  })
+})
 </script>
