@@ -44,4 +44,8 @@ router.post("/api/edit-post/:id", session.isAuthenticated, postUploads, postCont
 router.post("/api/delete-post/:id", session.isAuthenticated, postController.deletePost);
 router.post("/api/delete-post-admin/:id", session.isAuthenticatedAdmin, adminController.deletePost);
 
+router.post("/api/like-post", session.isAuthenticated, postController.likePost);
+router.post("/api/unlike-post", session.isAuthenticated, postController.unlikePost);
+
+
 module.exports = router;

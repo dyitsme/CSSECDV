@@ -16,9 +16,17 @@ async function createPost(userId, title, content, img, docu) {
   return result;
 }
 
-async function getAllPosts() {
-  const [rows] = await db.query(`SELECT * FROM posts`);
-  return rows;
+async function getAllPosts(userId) {
+  // const [rows] = await db.query(`SELECT * FROM posts`);
+  // return rows;
+  const [result] = await db.query(`
+    SELECT p.*, COUNT(pl.postId) AS total_likes, 
+    EXISTS(SELECT * FROM post_likes pl WHERE pl.postId = p.id AND pl.userId = ?) AS isLiked
+    FROM posts p
+    LEFT JOIN post_likes pl ON p.id = pl.postId
+    GROUP BY p.id;
+  `, [userId]) 
+  return result;
 }
 
 async function getPostById(id) {
@@ -56,11 +64,28 @@ async function deletePostById(id) {
   return result;
 }
 
+async function likePost(userId, postId) {
+  const result = await db.query(`
+    INSERT INTO post_likes (userId, postId)
+    VALUES (?, ?)
+    `, [userId, postId]);
+  return result;
+}
+
+async function unlikePost(userId, postId) {
+  const result = await db.query(`
+  DELETE FROM post_likes WHERE userId = ? AND postId = ?;
+  `, [userId, postId])
+  return result;
+}
+
 module.exports = {
   createPost,
   getAllPosts,
   getPostById,
   getUserPostById,
   editPostById,
-  deletePostById
+  deletePostById,
+  likePost,
+  unlikePost
 }

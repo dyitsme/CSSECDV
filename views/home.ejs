@@ -33,10 +33,81 @@
             </div>
             <time datetime=""><%= post.date %></time>
           </div>
-      
+          <div class="likes">
+            <% // if there the post is not liked by the current user, display like button, else unlike button %>
+            <div class="total-likes"><%= post.total_likes %></div>
+            <% if (post.isLiked === 0) { %>
+              <button id="like" onclick="likeOrUnlike('<%= post.id %>')">Like</button>
+            <% } %>
+            <% if (post.isLiked === 1) { %>
+              <button id="unlike" onclick="unlikePage('<%= post.id %>')">Unlike</button>
+            <% } %>
+          </div>
         </div>
       </div>
     <%}) %>
   <% } %>
 </body>
 </html>
+
+<script>
+  const likeUrl = "http://localhost:3000/api/like-post";
+  const unlikeUrl = "http://localhost:3000/api/unlike-post";
+
+  function likeOrUnlike(strpostId) {
+
+    const postId = Number(strpostId);
+    const data = {
+      postId: postId
+    };
+
+    fetch(likeUrl, {
+      method: "POST",
+      body: JSON.stringify(data),
+      headers: {
+        'Content-Type': 'application/json',
+      }
+    })
+    .then(response => {
+      const totalLikes = document.querySelector(".total-likes");
+      document.querySelector("#like").id = "#unlike"
+      totalLikes.textContent = Number(totalLikes.textContent) + 1;
+    });
+  }
+
+  function likePage(strpostId) {
+    const postId = Number(strpostId);
+    const data = {
+      postId: postId
+    };
+
+    fetch(likeUrl, {
+      method: "POST",
+      body: JSON.stringify(data),
+      headers: {
+        'Content-Type': 'application/json',
+      }
+    })
+    .then(response => {
+      const like = document.querySelector("#like");
+    });
+  }
+
+  function unlikePage(strpostId) {
+    const postId = Number(strpostId);
+    const data = {
+      postId: postId
+    };
+    fetch(unlikeUrl, {
+      method: "POST",
+      body: JSON.stringify(data),
+      headers: {
+        'Content-Type': 'application/json',
+      }
+    })
+    .then(response => {
+      const unlike = document.querySelector("#unlike");
+    });
+    
+  }
+</script>
