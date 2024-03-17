@@ -7,12 +7,14 @@ const MySQLStore = require('express-mysql-session')(session);
 const rateLimit = require('express-rate-limit');
 const { loginUser } = require('./controllers/loginController');
 const path = require('path');
+const nocache = require("nocache");
 
 const app = express();
 
 // parse from FE to BE
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
+app.use(nocache());
 
 const options = {
   host     : process.env.host,
