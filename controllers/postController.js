@@ -103,11 +103,33 @@ const deletePost = async (req, res) => {
   }
 };
 
+const likePost = async (req, res) => {
+  const userId = req.session.user.userId;
+  const { postId } = req.body;
+  console.log(req.body);
+  const result = await Post.likePost(userId, postId);
+  if (result) {
+    res.status(200).send("Post liked");
+  }
+};
+
+const unlikePost = async (req, res) => {
+  const userId = req.session.user.userId;
+  const { postId } = req.body;
+  console.log("delete: ", postId);
+  const result = await Post.unlikePost(userId, postId);
+  if (result) {
+    res.status(200).send("Post unliked");
+  }
+}
+
 module.exports = {
   createPostView,
   createPost,
   updatePostView,
   updatePost,
   deletePostView,
-  deletePost
+  deletePost,
+  likePost,
+  unlikePost
 };
