@@ -34,13 +34,13 @@
             <time datetime=""><%= post.date %></time>
           </div>
           <div class="likes">
-            <% // if there the post is not liked by the current user, display like button, else unlike button %>
-            <div class="total-likes"><%= post.total_likes %></div>
+            <div class="total-likes" id="total-likes-<%= post.id %>"><%= post.total_likes %></div>
             <% if (post.isLiked === 0) { %>
-              <button class="like" onclick="likeOrUnlike('<%= post.id %>')"><i class="fa-regular fa-thumbs-up"></i></button>
-            <% } %>
-            <% if (post.isLiked === 1) { %>
-              <button class="unlike" onclick="unlikePage('<%= post.id %>')"><i class="fa-solid fa-thumbs-up"></i></button>
+              <button id="like-<%= post.id %>" class="like" onclick="likeOrUnlike('<%= post.id %>', false)"><i class="fa-regular fa-thumbs-up"></i></button>
+              <button id="unlike-<%= post.id %>" class="unlike" style="display: none;" onclick="likeOrUnlike('<%= post.id %>', true)"><i class="fa-solid fa-thumbs-up"></i></button>
+            <% } else { %>
+              <button id="like-<%= post.id %>" class="like" style="display: none;" onclick="likeOrUnlike('<%= post.id %>', false)"><i class="fa-regular fa-thumbs-up"></i></button>
+              <button id="unlike-<%= post.id %>" class="unlike" onclick="likeOrUnlike('<%= post.id %>', true)"><i class="fa-solid fa-thumbs-up"></i></button>
             <% } %>
           </div>
         </div>
@@ -55,26 +55,41 @@
   const likeUrl = "http://localhost:3000/api/like-post";
   const unlikeUrl = "http://localhost:3000/api/unlike-post";
 
-  function likeOrUnlike(strpostId) {
-
-    const postId = Number(strpostId);
+  function likeOrUnlike(postId, isLiked) {
     const data = {
       postId: postId
     };
-    // if liked send to unlikeUrl
-    // else send to likeUrl
-    fetch(likeUrl, {
+
+    const totalLikes = document.querySelector(`#total-likes-${postId}`);
+    const currentLikes = parseInt(totalLikes.textContent);
+    
+    const url = isLiked ? unlikeUrl : likeUrl; // Determine the appropriate URL
+    
+    fetch(url, {
       method: "POST",
       body: JSON.stringify(data),
       headers: {
         'Content-Type': 'application/json',
       }
     })
-    .then(response => {
-      const totalLikes = document.querySelector(".total-likes");
-      document.querySelector("#like").id = "#unlike"
-      totalLikes.textContent = Number(totalLikes.textContent) + 1;
-      console.log(totalLikes.textContent);
+    .then(data => {
+      // Update the total likes count
+      const totalLikes = document.querySelector(`#total-likes-${postId}`);
+      totalLikes.textContent = data.total_likes;
+
+      // Toggle between like and unlike buttons
+      const likeButton = document.querySelector(`#like-${postId}`);
+      const unlikeButton = document.querySelector(`#unlike-${postId}`);
+
+      if (isLiked) {
+        likeButton.style.display = "inline-block";
+        unlikeButton.style.display = "none";
+        totalLikes.textContent = currentLikes - 1;
+      } else {
+        likeButton.style.display = "none";
+        unlikeButton.style.display = "inline-block";
+        totalLikes.textContent = currentLikes + 1;
+      }
     });
   }
 
@@ -92,7 +107,7 @@
       }
     })
     .then(response => {
-      const like = document.querySelector("#like");
+      const like = document.querySelector(".like");
     });
   }
 
@@ -109,7 +124,7 @@
       }
     })
     .then(response => {
-      const unlike = document.querySelector("#unlike");
+      const unlike = document.querySelector(".unlike");
     });
     
   }
