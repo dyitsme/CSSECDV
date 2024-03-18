@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <%- include('./partials/nav.ejs') %>
+  <div class="block is-size-2">
+    Edit profile
+  </div>
+  <% if (user.img)  { %>
+    <img src="<%= "profileUploads/" + JSON.parse(user.img).filename %>">
+  <% } else { %>
+    <img src="https://ui-avatars.com/api/?name=<%= user.firstName %>+<%= user.lastName %>">
+  <% } %>
+  <form action="/api/edit-profile" method="post" enctype="multipart/form-data">
+    <div class="field">
+      <div class="control">
+        <input class="input" type="text" name="firstName" id="firstName" placeholder="First Name" value=<%= user.firstName %>>
+      </div>
+    </div>
+    <div class="field">
+      <div class="control">
+        <input class="input" type="text" name="lastName" id="lastName" placeholder="Last Name" value=<%= user.lastName %>>
+      </div>
+    </div>
+    <div class="field">
+      <label class="label">Upload image</label>
+      <div class="control">
+        <input class="input" type="file" accept="image/png, image/jpeg" name="image" id="image">
+      </div>
+    </div>
+    <button class="button is-link" id="post" type="submit">Post</button>
+  </form>
+</body>
+</html>

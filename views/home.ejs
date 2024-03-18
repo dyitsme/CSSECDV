@@ -12,11 +12,13 @@
   <% if (posts.length > 0) { %>
     <% posts.forEach(post => { %>
       <div class="card">
-        <div class="card-image">
-          <figure class="image is-16by9">
-            <img src="<%= "postUploads/" + JSON.parse(post.img).filename %>">
-          </figure>
-        </div>
+        <% if (post.img) { %>
+          <div class="card-image">
+            <figure class="image is-16by9">
+              <img src="<%= "postUploads/" + JSON.parse(post.img).filename %>">
+            </figure>
+          </div>
+        <% } %>
         <div class="card-content">
           <div class="content">
             <%= post.title %>

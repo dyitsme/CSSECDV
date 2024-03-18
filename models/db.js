@@ -68,6 +68,17 @@ async function activateUserById(id) {
   return result;
 }
 
+async function editUser(id, firstName, lastName, img) {
+  const result = await db.query(`
+    UPDATE users 
+    SET firstName = ?,
+    lastName = ?,
+    img = ?
+    WHERE id = ?
+    `, [firstName, lastName, img, id]);
+  return result;
+}
+
 module.exports = {
   getAllUsers,
   createUser,
@@ -76,5 +87,6 @@ module.exports = {
   getNonAdminUsers,
   getUserById,
   deactivateUserById,
-  activateUserById
+  activateUserById,
+  editUser
 };

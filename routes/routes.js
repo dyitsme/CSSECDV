@@ -3,9 +3,10 @@ const loginController = require("../controllers/loginController");
 const homeController = require("../controllers/homeController");
 const adminController = require("../controllers/adminController");
 const postController = require("../controllers/postController");
+const userController = require("../controllers/userController");
 const session = require("../middleware/session");
 
-const { postFileUpload } = require("../middleware/fileUpload");
+const { postFileUpload, profileImageUpload } = require("../middleware/fileUpload");
 
 const router = express.Router();
 const postUploads = postFileUpload.fields([{ name: "image", maxCount: 1 }, { name: "docu", maxCount: 1 }]);
@@ -25,6 +26,8 @@ router.get("/activate-user/:id", session.isAuthenticatedAdmin, adminController.a
 router.get("/edit-post/:id", session.isAuthenticated, postController.updatePostView);
 router.get("/delete-post/:id", session.isAuthenticated, postController.deletePostView);
 
+// profile routes
+router.get("/edit-profile", session.isAuthenticated, userController.editProfileView);
 
 // post routes
 router.get("/create-post", session.isAuthenticated, postController.createPostView);
@@ -46,6 +49,8 @@ router.post("/api/delete-post-admin/:id", session.isAuthenticatedAdmin, adminCon
 
 router.post("/api/like-post", session.isAuthenticated, postController.likePost);
 router.post("/api/unlike-post", session.isAuthenticated, postController.unlikePost);
+
+router.post("/api/edit-profile", session.isAuthenticated, profileImageUpload.single("image"), userController.editProfile)
 
 
 module.exports = router;
