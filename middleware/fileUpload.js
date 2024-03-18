@@ -67,5 +67,6 @@ const profileImageUpload = multer({
 // };
 
 module.exports = {
-  postFileUpload
+  postFileUpload,
+  profileImageUpload
 }
