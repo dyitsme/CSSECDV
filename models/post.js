@@ -20,9 +20,10 @@ async function getAllPosts(userId) {
   // const [rows] = await db.query(`SELECT * FROM posts`);
   // return rows;
   const [result] = await db.query(`
-    SELECT p.*, COUNT(pl.postId) AS total_likes, 
+    SELECT u.firstName, p.*, COUNT(pl.postId) AS total_likes, 
     EXISTS(SELECT * FROM post_likes pl WHERE pl.postId = p.id AND pl.userId = ?) AS isLiked
     FROM posts p
+    LEFT JOIN users u ON p.userId = u.id
     LEFT JOIN post_likes pl ON p.id = pl.postId
     GROUP BY p.id;
   `, [userId]) 

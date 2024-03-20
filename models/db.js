@@ -35,6 +35,14 @@ async function getUserByEmail(email) {
   return result[0];  
 }
 
+async function getUserByPhone(phone) {
+  const [result] = await db.query(`
+    SELECT * FROM cssecdv.users
+    WHERE phone = ?
+  `, [phone])
+  return result[0]
+}
+
 async function deleteUserById(id) {
   const result = await db.query(`
   DELETE FROM users WHERE id = ?;
@@ -83,6 +91,7 @@ module.exports = {
   getAllUsers,
   createUser,
   getUserByEmail,
+  getUserByPhone,
   deleteUserById,
   getNonAdminUsers,
   getUserById,

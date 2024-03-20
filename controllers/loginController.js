@@ -11,8 +11,9 @@ const loginView = async (req, res) => {
   res.render("login", { err_msg: err_msg });
 };
 
-const registerView = (req, res) => {
-  res.render("register");
+const registerView = async (req, res) => {
+  const err_msg = await req.flash("err_msg");
+  res.render("register", { err_msg: err_msg });
 
   const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 };
@@ -20,13 +21,43 @@ const registerView = (req, res) => {
 const createUser = async (req, res) => {
   const { firstName, lastName, email, phone, password, confirmPass, picture } = req.body;
   if (password != confirmPass) {
+    req.flash("err_msg", "Passwords do not match!");
     res.redirect("/register");
   }
   else {
-    const saltRounds = 10;  
-    const hash = await bcrypt.hash(password, saltRounds);
-    const user = await db.createUser(firstName, lastName, email, phone, hash, picture);
-    res.redirect("/login");
+    const check1 = await db.getUserByEmail(email);
+    const check2 = await db.getUserByPhone(phone);
+    console.log(check1)
+    console.log(check2)
+    if(check1) {
+      req.flash("err_msg", "Email already taken!");
+      res.redirect("/register");
+    }
+    else if(check2) {
+      req.flash("err_msg", "Phone number already taken!");
+      res.redirect("/register");
+    }
+    else {
+      const saltRounds = 10;  
+      const hash = await bcrypt.hash(password, saltRounds);
+
+      console.log("req.file: ")
+      console.log(req.file)
+
+      const image = JSON.stringify({
+        filename: req.file.filename,
+        path: req.file.path
+       });
+
+      const user = await db.createUser(firstName, lastName, email, phone, hash, image);
+      if(user) {
+        res.redirect("/login");
+      }
+      else {
+        req.flash("err_msg", "Account creation failed!");
+        res.redirect("/register");
+      }
+    }
   }
 };
 
@@ -35,7 +66,7 @@ const loginUser = async (req, res) => {
   
   // fetch email from database
   const user = await db.getUserByEmail(email);
-  console.log("user: ", user);
+  //console.log("user: ", user);
   if (user) {
     const result = await bcrypt.compare(password, user.password);
     if (result) {

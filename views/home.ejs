@@ -31,9 +31,12 @@
               </figure>
             </div>
             <div class="media-content">
-              <p class="title is-4">John Smith</p>
+              <p class="title is-4"><%= post.firstName %></p>
             </div>
             <time datetime=""><%= post.date %></time>
+          </div>
+          <div class="content">
+            <%= post.content %>
           </div>
           <div class="likes">
             <div class="total-likes" id="total-likes-<%= post.id %>"><%= post.total_likes %></div>

@@ -20,26 +20,27 @@ router.get("/", session.isAuthenticated, homeController.homeView);
 router.get("/admin", session.isAuthenticatedAdmin, adminController.adminView);
 router.get("/delete-user/:id", session.isAuthenticatedAdmin, adminController.deleteUserView);
 router.get("/deactivate-user/:id", session.isAuthenticatedAdmin, adminController.deactivateUserView);
-router.get("/delete-post-admin/:id", session.isAuthenticatedAdmin, adminController.deletePostAdminView);
-
 router.get("/activate-user/:id", session.isAuthenticatedAdmin, adminController.activateUserView);
-router.get("/edit-post/:id", session.isAuthenticated, postController.updatePostView);
-router.get("/delete-post/:id", session.isAuthenticated, postController.deletePostView);
+router.get("/delete-post-admin/:id", session.isAuthenticatedAdmin, adminController.deletePostAdminView);
 
 // profile routes
 router.get("/edit-profile", session.isAuthenticated, userController.editProfileView);
 
 // post routes
 router.get("/create-post", session.isAuthenticated, postController.createPostView);
+router.get("/edit-post/:id", session.isAuthenticated, postController.updatePostView);
+router.get("/delete-post/:id", session.isAuthenticated, postController.deletePostView);
 
 // user api routes
 router.get("/api/users", session.isAuthenticatedAdmin, loginController.getAllUsers);
-router.post("/api/create-user", session.isNotAuthenticated, loginController.createUser);
+router.post("/api/create-user", session.isNotAuthenticated, profileImageUpload.single("picture"), loginController.createUser);
 router.post("/api/login", session.isNotAuthenticated, loginController.loginUser);
 router.post("/api/logout", session.isAuthenticated, loginController.logoutUser);
 router.post("/api/delete-user/:id", session.isAuthenticatedAdmin, adminController.deleteUser);
 router.post("/api/deactivate-user/:id", session.isAuthenticatedAdmin, adminController.deactivateUser);
 router.post("/api/activate-user/:id", session.isAuthenticatedAdmin, adminController.activateUser);
+
+router.post("/api/edit-profile", session.isAuthenticated, profileImageUpload.single("image"), userController.editProfile)
 
 // post api routes
 router.post("/api/create-post", session.isAuthenticated, postUploads, postController.createPost);
@@ -49,8 +50,5 @@ router.post("/api/delete-post-admin/:id", session.isAuthenticatedAdmin, adminCon
 
 router.post("/api/like-post", session.isAuthenticated, postController.likePost);
 router.post("/api/unlike-post", session.isAuthenticated, postController.unlikePost);
-
-router.post("/api/edit-profile", session.isAuthenticated, profileImageUpload.single("image"), userController.editProfile)
-
 
 module.exports = router;

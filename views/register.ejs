@@ -8,10 +8,19 @@
 </head>
 
 <body>
-  <div class="container">
+  <div class="section is-centered">
+    <% if (err_msg?.length) { %>
+      <div class="columns is-centered" id="error-msg">
+        <div class="column is-two-fifths notification is-danger is-light has-text-centered">
+          <button class="delete"></button>
+          <%= err_msg %>
+        </div>
+      </div>
+    <% } %>
+    <br>
     <div class="columns is-justify-content-center">
       <div class="column is-6-tablet is-5-desktop is-4-widescreen is-3-fullh">
-        <form method="POST" action="/api/create-user" class="box p-5" id="register" onchange="checkFields()">
+        <form method="POST" action="/api/create-user" class="box p-5" id="register" onchange="checkFields()" enctype="multipart/form-data">
           <h1 class="title is-1 has-text-centered">Sign Up</h1>
           
           <label class="is-block mb-4">
@@ -259,4 +268,19 @@
       }
   }
 
+  document.addEventListener('DOMContentLoaded', (event) => {
+    const delErrMsg = () => {
+      const errorMsg = document.querySelector("#error-msg").remove();
+
+      if (errorMsg) {
+        errorMsg.remove;
+      }
+    };
+
+    const deleteButton = document.querySelector(".delete");
+
+    if (deleteButton) {
+      deleteButton.addEventListener("click", delErrMsg);
+    }
+  });
 </script>
