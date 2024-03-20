@@ -1,4 +1,5 @@
 const db = require("../models/db");
+const logger = require('../logger');
 
 const editProfileView = async (req, res) => {
   const id = req.session.user.userId
@@ -18,8 +19,13 @@ const editProfile = async (req, res) => {
   const result = await db.editUser(id, firstName, lastName, image);
   console.log(result);
   if (result) {
+    logger.info(`Transaction: User '${req.session.user?.email}' edited their profile.`);
     req.flash("success_msg", "Successfully updated profile");
     res.redirect("/");
+  } else {
+    logger.info(`Transaction: User '${req.session.user?.email}' failed to edit their profile.`);
+    req.flash("success_msg", "Failed to edit profile");
+    res.redirect("/edit-profile");
   }
 };
 

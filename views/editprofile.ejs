@@ -51,6 +51,20 @@
 </html>
 
 <script>
+  function isValid(err, pattern, currentValue, flag){
+    var valid = pattern.test(currentValue);
+
+      if (valid){
+          err.style.display = 'none';
+          flag[0] = 1;
+      }
+
+      else {
+          err.style.display = 'block';
+          flag[0] = 0;
+      }
+  }
+
   var firstFlag = {0:1}, lastFlag = {0:1}, imageFlag = {0:1}
   var firstName = document.querySelector('#firstName');
   var firstErr = document.querySelector('#firstErr');
@@ -89,18 +103,18 @@
 
   function checkFields(){
     console.log("checkFields");
-    if (titleFlag[0] == 1 && contentFlag[0] == 1 && imageFlag[0] == 1){
+    if (firstFlag[0] == 1 && lastFlag[0] == 1 && imageFlag[0] == 1){
         console.log("correct");
-        console.log(titleFlag);
-        console.log(contentFlag);
+        console.log(firstFlag);
+        console.log(lastFlag);
         console.log(imageFlag);
         post.removeAttribute('disabled');
       }
 
       else {
         console.log("incorrect:");
-        console.log(titleFlag);
-        console.log(contentFlag);
+        console.log(firstFlag);
+        console.log(lastFlag);
         console.log(imageFlag);
         post.setAttribute('disabled', 'disabled');
       }

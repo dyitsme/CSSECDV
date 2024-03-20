@@ -8,7 +8,6 @@ const rateLimit = require('express-rate-limit');
 const { loginUser } = require('./controllers/loginController');
 const path = require('path');
 const nocache = require("nocache");
-const winston = require("winston");
 
 const app = express();
 
@@ -30,6 +29,7 @@ const sessionStore = new MySQLStore(options);
 app.use("/postUploads", express.static(path.join(__dirname, "public/postUploads")));
 app.use("/profileUploads", express.static(path.join(__dirname, "public/profileUploads")));
 app.use(express.urlencoded({ extended: true }));
+
 app.use(express.json());
 
 app.use(session({
@@ -51,6 +51,7 @@ const limiter = rateLimit({
 	legacyHeaders: false, // Disable the `X-RateLimit-*` headers
 });
 
+// authentication
 app.post('/api/login', limiter, loginUser);
 
 app.listen(process.env.PORT || 3000, () => {
