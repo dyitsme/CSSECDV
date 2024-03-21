@@ -18,12 +18,15 @@ const createPost = async (req, res) => {
    path: req.files["docu"][0].path
   });
 
-
-  const { title, content } = req.body;
-  const response = await Post.createPost(userId, title, content, image, docu);
-  if (response) {
-    logger.info(`Transaction: User '${req.session.user?.email}' created a post.`);
-    res.redirect("/");
+  var titlePattern = /^[a-zA-Z][a-z.,!?:A-Z\s-]{0,30}[a-z.!?A-Z]$/;
+  var contentPattern = /^[a-zA-Z][a-z.,!?:A-Z\s-]{0,1024}[a-z.!?A-Z]$/;
+  if (titlePattern.test(title && contentPattern.test(content))) {
+    const { title, content } = req.body;
+    const response = await Post.createPost(userId, title, content, image, docu);
+    if (response) {
+      logger.info(`Transaction: User '${req.session.user?.email}' created a post.`);
+      res.redirect("/");
+    }
   }
 };
 
@@ -60,14 +63,18 @@ const updatePost = async (req, res) => {
    path: req.files["docu"][0].path
   });
 
-  const valid = await Post.getUserPostById(id, userId);
-  if (valid) {
-    const result = await Post.editPostById(id, title, content, image, docu);
-    console.log(result);
-    if (result) {
-      logger.info(`Transaction: User '${req.session.user?.email}' edited post '${id}'.`);
-      req.flash("success_msg", "Successfully updated post");
-      res.redirect("/");
+  var titlePattern = /^[a-zA-Z][a-z.,!?:A-Z\s-]{0,30}[a-z.!?A-Z]$/;
+  var contentPattern = /^[a-zA-Z][a-z.,!?:A-Z\s-]{0,1024}[a-z.!?A-Z]$/;
+  if (titlePattern.test(title && contentPattern.test(content))) {
+    const valid = await Post.getUserPostById(id, userId);
+    if (valid) {
+      const result = await Post.editPostById(id, title, content, image, docu);
+      console.log(result);
+      if (result) {
+        logger.info(`Transaction: User '${req.session.user?.email}' edited post '${id}'.`);
+        req.flash("success_msg", "Successfully updated post");
+        res.redirect("/");
+      }
     }
   }
   else {
