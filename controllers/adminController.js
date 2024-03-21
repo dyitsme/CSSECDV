@@ -4,9 +4,10 @@ const logger = require('../logger');
 
 const adminView = async (req, res) => {
   const success_msg = await req.flash("success_msg");
+  const user = await db.getUserById(req.session.user.userId);
   const users = await db.getAllUsers();
   const posts = await Post.getAllPosts();
-  res.render("admin", { users, posts, success_msg: success_msg });
+  res.render("admin", { user, users, posts, success_msg: success_msg });
 };
 
 const deleteUserView = async (req, res) => {

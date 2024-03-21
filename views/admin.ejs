@@ -7,7 +7,7 @@
   <title>Document</title>
 </head>
 <body>
-  <%- include('./partials/nav.ejs') %>
+  <%- include('./partials/nav.ejs', { user: user }) %>
   <div class="block">
   <% if (success_msg.length > 0) { %>
     <div class="" id="success-msg">
