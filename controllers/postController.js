@@ -1,4 +1,5 @@
 const Post = require("../models/post");
+const logger = require('../logger');
 
 const createPostView = async (req, res) => {
   res.render("createpost");
@@ -21,6 +22,7 @@ const createPost = async (req, res) => {
   const { title, content } = req.body;
   const response = await Post.createPost(userId, title, content, image, docu);
   if (response) {
+    logger.info(`Transaction: User '${req.session.user?.email}' created a post.`);
     res.redirect("/");
   }
 };
@@ -63,6 +65,7 @@ const updatePost = async (req, res) => {
     const result = await Post.editPostById(id, title, content, image, docu);
     console.log(result);
     if (result) {
+      logger.info(`Transaction: User '${req.session.user?.email}' edited post '${id}'.`);
       req.flash("success_msg", "Successfully updated post");
       res.redirect("/");
     }
@@ -94,6 +97,7 @@ const deletePost = async (req, res) => {
   if (valid) {
     const result = await Post.deletePostById(id);
     if (result) {
+      logger.info(`Transaction: User '${req.session.user?.email}' deleted post '${id}'.`);
       req.flash("success_msg", "Successfully deleted post");
       res.redirect("/");
     }

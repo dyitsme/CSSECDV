@@ -8,6 +8,8 @@ const session = require("../middleware/session");
 
 const { postFileUpload, profileImageUpload } = require("../middleware/fileUpload");
 
+const log = require("../middleware/log")
+
 const router = express.Router();
 const postUploads = postFileUpload.fields([{ name: "image", maxCount: 1 }, { name: "docu", maxCount: 1 }]);
 

@@ -88,7 +88,7 @@
   })
 
   password.addEventListener('input', function(e){
-      var pattern = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])((?=.*\W)|(?=.*_))[a-zA-Z0-9_\W]{8,20}$/;
+      var pattern = /^[a-zA-Z0-9_\W]{8,20}$/;
       var currentValue = e.target.value;
       isValid(passErr, pattern, currentValue, passwordFlag);
   })
