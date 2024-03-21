@@ -19,6 +19,7 @@ const createPost = async (req, res) => {
    filename: req.files["docu"][0].filename,
    path: req.files["docu"][0].path
   });
+
   const { title, content } = req.body;
 
   var titlePattern = /^[a-zA-Z][a-z.,!?:A-Z\s-]{0,30}[a-z.!?A-Z]$/;
