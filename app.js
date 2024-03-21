@@ -43,6 +43,34 @@ app.use(session({
 }));
 
 app.use(flash());
+app.use(express.static('public'));
+
+const checkIdleTimeout = (req, res, next) => {
+  const idleTimeout = 10 * 1000; // Idle timeout duration in milliseconds (e.g., 15 minutes)
+
+  // Check if the user is authenticated and if the session has a lastActive timestamp
+  if (req.session && req.session.user && req.session.lastActive) {
+      const elapsedTime = Date.now() - req.session.lastActive;
+      if (elapsedTime > idleTimeout) {
+          // If user is inactive for more than the idle timeout period, destroy the session and logout the user
+          req.session.destroy((err) => {
+              if (err) {
+                  console.error('Error destroying session:', err);
+              }
+              // Respond with a status indicating logout or redirect to the login page
+              res.sendStatus(401); // Unauthorized status
+          });
+          return; // Exit middleware to prevent further processing
+      } else {
+          // Update the lastActive timestamp for the user's session
+          req.session.lastActive = Date.now();
+      }
+  }
+  next(); // Continue processing the request
+};
+
+// Apply the checkIdleTimeout middleware to relevant routes or all routes
+app.use(checkIdleTimeout);
 
 app.set('view engine', 'ejs');
 

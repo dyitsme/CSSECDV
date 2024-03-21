@@ -8,15 +8,48 @@
 </head>
 <body>
   <div>
-    Are you sure you want to delete this post <%= post.title %>
-  </div>
-  <div class="buttons block">
-    <form action="/api/delete-post/<%= post.id %>" method="POST">
-      <button class="button is-danger">
-        Delete
-      </button>
-    </form>
-    <a href="/" class="button is-light">Cancel</a>
+    <div class="columns is-mobile is-centered">
+      <div class="column is-half box">
+        <header class="is-size-3 has-text-weight-bold block">Delete Post</header>
+        <div class="block">
+          Are you sure you want to delete this post: <%= post.title %>
+        </div>
+        <div class="buttons block">
+          <form action="/api/delete-post/<%= post.id %>" method="POST">
+            <button class="button is-danger">
+              Delete
+            </button>
+          </form>
+          <a href="/" class="button is-light">Cancel</a>
+        </div>
+      </div>
+    </div>
   </div>
 </body>
 </html>
+
+<script>
+let idleTimer;
+
+function resetIdleTimer() {
+    clearTimeout(idleTimer);
+    idleTimer = setTimeout(idle, 10 * 1000); // Logout user after 15 minutes of inactivity
+}
+
+function idle() {
+  console.log("Inactive!");
+  
+  var logout = document.createElement('form');
+  logout.method = 'POST';
+  logout.action = '/api/logout';
+  document.body.append(logout)
+  logout.submit();
+}
+
+// Event listeners to reset idle timer on user activity
+document.addEventListener('mousemove', resetIdleTimer);
+document.addEventListener('keypress', resetIdleTimer);
+
+// Initial setup to start the idle timer
+resetIdleTimer();
+</script>

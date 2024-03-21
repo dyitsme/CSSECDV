@@ -16,16 +16,19 @@ const editProfile = async (req, res) => {
    path: req.file.path
   });
   
-  const result = await db.editUser(id, firstName, lastName, image);
-  console.log(result);
-  if (result) {
-    logger.info(`Transaction: User '${req.session.user?.email}' edited their profile.`);
-    req.flash("success_msg", "Successfully updated profile");
-    res.redirect("/");
-  } else {
-    logger.info(`Transaction: User '${req.session.user?.email}' failed to edit their profile.`);
-    req.flash("success_msg", "Failed to edit profile");
-    res.redirect("/edit-profile");
+  var namePattern = /^[a-zA-Z][a-zA-Z\s-]{0,18}[a-zA-Z]$/;
+  if (namePattern.test(firstName) && namePattern.test(lastName)) {
+    const result = await db.editUser(id, firstName, lastName, image);
+    console.log(result);
+    if (result) {
+      logger.info(`Transaction: User '${req.session.user?.email}' edited their profile.`);
+      req.flash("success_msg", "Successfully updated profile");
+      res.redirect("/");
+    } else {
+      logger.info(`Transaction: User '${req.session.user?.email}' failed to edit their profile.`);
+      req.flash("success_msg", "Failed to edit profile");
+      res.redirect("/edit-profile");
+    }
   }
 };
 

@@ -1,8 +1,10 @@
+const db = require("../models/db");
 const Post = require("../models/post");
 const logger = require('../logger');
 
 const createPostView = async (req, res) => {
-  res.render("createpost");
+  const user = await db.getUserById(req.session.user.userId);
+  res.render("createpost", { user });
 };
 
 const createPost = async (req, res) => {
@@ -18,12 +20,15 @@ const createPost = async (req, res) => {
    path: req.files["docu"][0].path
   });
 
-
-  const { title, content } = req.body;
-  const response = await Post.createPost(userId, title, content, image, docu);
-  if (response) {
-    logger.info(`Transaction: User '${req.session.user?.email}' created a post.`);
-    res.redirect("/");
+  var titlePattern = /^[a-zA-Z][a-z.,!?:A-Z\s-]{0,30}[a-z.!?A-Z]$/;
+  var contentPattern = /^[a-zA-Z][a-z.,!?:A-Z\s-]{0,1024}[a-z.!?A-Z]$/;
+  if (titlePattern.test(title && contentPattern.test(content))) {
+    const { title, content } = req.body;
+    const response = await Post.createPost(userId, title, content, image, docu);
+    if (response) {
+      logger.info(`Transaction: User '${req.session.user?.email}' created a post.`);
+      res.redirect("/");
+    }
   }
 };
 
@@ -31,11 +36,12 @@ const updatePostView = async (req, res) => {
   // retrieve data from db by id
   // pass it onto the view
   const id = req.params.id;
+  const user = await db.getUserById(req.session.user.userId);
   const userId = req.session.user.userId
   // get session id of user, if fail show an error page
   const post = await Post.getUserPostById(id, userId);
   if (post) {
-    res.render("editpost", { post });
+    res.render("editpost", { user, post });
   }
   else {
     res.render("404");
@@ -60,14 +66,18 @@ const updatePost = async (req, res) => {
    path: req.files["docu"][0].path
   });
 
-  const valid = await Post.getUserPostById(id, userId);
-  if (valid) {
-    const result = await Post.editPostById(id, title, content, image, docu);
-    console.log(result);
-    if (result) {
-      logger.info(`Transaction: User '${req.session.user?.email}' edited post '${id}'.`);
-      req.flash("success_msg", "Successfully updated post");
-      res.redirect("/");
+  var titlePattern = /^[a-zA-Z][a-z.,!?:A-Z\s-]{0,30}[a-z.!?A-Z]$/;
+  var contentPattern = /^[a-zA-Z][a-z.,!?:A-Z\s-]{0,1024}[a-z.!?A-Z]$/;
+  if (titlePattern.test(title && contentPattern.test(content))) {
+    const valid = await Post.getUserPostById(id, userId);
+    if (valid) {
+      const result = await Post.editPostById(id, title, content, image, docu);
+      console.log(result);
+      if (result) {
+        logger.info(`Transaction: User '${req.session.user?.email}' edited post '${id}'.`);
+        req.flash("success_msg", "Successfully updated post");
+        res.redirect("/");
+      }
     }
   }
   else {
@@ -78,11 +88,12 @@ const updatePost = async (req, res) => {
 
 const deletePostView = async (req, res) => {
   const id = req.params.id;
+  const user = await db.getUserById(req.session.user.userId);
   const userId = req.session.user.userId;
   const post = await Post.getUserPostById(id, userId);
   console.log(post);
   if (post) {
-    res.render("deletepost", { post });
+    res.render("deletepost", { user, post });
   }
   else {
     res.render("404");
