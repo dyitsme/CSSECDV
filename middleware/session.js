@@ -1,6 +1,10 @@
 const isAuthenticated = (req, res, next) => {
-  if (req.session && req.session.user) {
-    next();
+  if (req.session && !req.session.user) {
+    // Session has expired
+    // Redirect or render a page with a message indicating session expiry
+    res.render("expired");
+  } else if (req.session && req.session.user) {
+    next()
   } else {
     // res.status(400).json({ message: "No credentials provided" });
     console.log("message: No credentials provided");
@@ -9,10 +13,14 @@ const isAuthenticated = (req, res, next) => {
 };
 
 const isAuthenticatedAdmin = (req, res, next) => {
-  if (req.session && req.session.user) {
+  if (req.session && !req.session.user) {
+    // Session has expired
+    // Redirect or render a page with a message indicating session expiry
+    res.render("expired");
+  } else if (req.session && req.session.user) {
     if (req.session.user.isAdmin) {
       if (req.session.user.isAdmin == 1) {
-        next();
+        next()
       }
     }
     else {
@@ -33,6 +41,15 @@ const isNotAuthenticated = (req, res, next) => {
     next();
   }
 }
+
+const isSessionExpired = (req, res) => {
+  if (!req.session.user) {
+    // Session has expired
+    // Redirect or render a page with a message indicating session expiry
+    res.render("expired");
+  }
+}
+
 
 module.exports = {
   isAuthenticated,
