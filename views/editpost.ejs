@@ -11,32 +11,128 @@
   <div class="block is-size-2">
     Edit post
   </div>
-  <form action="/api/edit-post/<%= post.id %>" method="post" enctype="multipart/form-data">
+  <form action="/api/edit-post/<%= post.id %>" method="post" enctype="multipart/form-data" onChange="checkFields()">
     <div class="field">
       <div class="control">
-        <input class="input" type="text" name="title" id="title" placeholder="Title" value=<%= post.title %>>
+        <input class="input" type="text" name="title" id="title" placeholder="Title" value=<%= post.title %> required>
       </div>
+      <p id="titleErr" style="display: none; color: red;">Please enter a valid title</p>
     </div>
     <div class="field">
       <div class="control">
-        <textarea class="textarea" name="content" id="content" placeholder="Content"><%= post.content %></textarea>
+        <textarea class="textarea" name="content" id="content" placeholder="Content" required><%= post.content %></textarea>
       </div>
+      <p id="contentErr" style="display: none; color: red;">Please enter a valid content</p>
     </div>
     <div class="field">
       <div>Currently: <%= JSON.parse(post.img).filename %></div>
       <label class="label">Upload image</label>
       <div class="control">
-        <input class="input" type="file" accept="image/png, image/jpeg" name="image" id="image">
+        <input class="input" type="file" accept="image/png, image/jpeg" name="image" id="image" required>
       </div>
+      <p id="imageErr" style="display: none; color: red;">File type must be .jpg or .png</p>
     </div>
     <div class="field">
       <div>Currently: <%= JSON.parse(post.docu).filename %></div>
       <label class="label">Upload document</label>
       <div class="control">
-        <input class="input" type="file" accept="application/pdf" name="docu" id="docu">
+        <input class="input" type="file" accept="application/pdf" name="docu" id="docu" required>
       </div>
+      <p id="docuErr" style="display: none; color: red;">Upload a proper document file</p>
     </div>
-    <button class="button is-link" id="post" type="submit">Post</button>
+    <button class="button is-link" id="post" name="post" type="submit">Post</button>
   </form>
 </body>
 </html>
+
+<script>
+  function isValid(err, pattern, currentValue, flag){
+    var valid = pattern.test(currentValue);
+
+      if (valid){
+          err.style.display = 'none';
+          flag[0] = 1;
+      }
+
+      else {
+          err.style.display = 'block';
+          flag[0] = 0;
+      }
+  }
+  
+  var titleFlag = {0:1}, contentFlag = {0:1}, imageFlag = {0:1}, docuFlag = {0:1}
+  var title = document.querySelector('#title');
+  var titleErr = document.querySelector('#titleErr');
+  var content = document.querySelector('#content');
+  var contentErr = document.querySelector('#contentErr');
+  var image = document.querySelector('#image');
+  var imageErr = document.querySelector('#imageErr');
+  var docu = document.querySelector('#docu');
+  var docuErr = document.querySelector('#docuErr');
+  var post = document.querySelector('#post');
+
+  title.addEventListener('input', function(e){
+      var pattern = /^[a-zA-Z][a-z.,!?:A-Z\s-]{0,30}[a-z.!?A-Z]$/;
+      var currentValue = e.target.value;
+      console.log(currentValue);
+      isValid(titleErr, pattern, currentValue, titleFlag);
+  })
+
+  content.addEventListener('input', function(e){
+      var pattern = /^[a-zA-Z][a-z.,!?:A-Z\s-]{0,1024}[a-z.!?A-Z]$/;
+      var currentValue = e.target.value;
+      isValid(contentErr, pattern, currentValue, contentFlag);
+  })
+
+  image.addEventListener('input', function(e){
+      var currentValue = e.target.value.split('.');
+      console.log(currentValue)
+      var ext = currentValue[currentValue.length-1]; 
+
+      if(ext == "jpg" || ext == "png") {
+          imageErr.style.display = 'none';
+          imageFlag[0] = 1;
+      }
+
+      else {
+          imageErr.style.display = 'block';
+          imageFlag[0] = 0;
+      }
+  })
+
+  docu.addEventListener('input', function(e){
+      var currentValue = e.target.value.split('.');
+      var ext = currentValue[currentValue.length-1];  
+
+      if(ext == "pdf") {
+          docuErr.style.display = 'none';
+          docuFlag[0] = 1;
+      }
+
+      else {
+          docuErr.style.display = 'block';
+          docuFlag[0] = 0;
+      }
+  })
+
+  function checkFields(){
+    console.log("checkFields");
+    if (titleFlag[0] == 1 && contentFlag[0] == 1 && imageFlag[0] == 1 && docuFlag[0] == 1){
+        console.log("correct");
+        console.log(titleFlag);
+        console.log(contentFlag);
+        console.log(imageFlag);
+        console.log(docuFlag);
+        post.removeAttribute('disabled');
+      }
+
+      else {
+        console.log("incorrect:");
+        console.log(titleFlag);
+        console.log(contentFlag);
+        console.log(imageFlag);
+        console.log(docuFlag);
+        post.setAttribute('disabled', 'disabled');
+      }
+  }
+</script>

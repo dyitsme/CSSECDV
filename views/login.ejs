@@ -19,7 +19,7 @@
     <br>
     <div class="columns is-centered">
       <div class="column is-two-fifths box px-5 py-6">
-        <form action="/api/login" method="POST">
+        <form action="/api/login" method="POST" onChange="checkFields()">
           <h1 class="title is-1 has-text-centered">Login</h1>
 
           <div class="field">
@@ -38,8 +38,10 @@
             </div>
           </div>
 
+          <p id="passErr" style="display: none; color: red;">Please enter a valid Password</p>
+
           <div class="mb-4">
-            <button type="submit" class="button is-link px-4" id="login">Login</button>
+            <button type="submit" class="button is-link px-4" name="login" id="login">Login</button>
           </div>
           
           <a class="has-text-centered has-text-link is-underlined" href="/register">Don't have an account? Sign in.</a>
@@ -58,27 +60,55 @@
 </html>
 
 <script>
-  function isValid(err, pattern, currentValue){
+  function isValid(err, pattern, currentValue, flag){
     var valid = pattern.test(currentValue);
 
       if (valid){
-          err.style.display = 'none'
+          err.style.display = 'none';
+          flag[0] = 1;
       }
 
       else {
-          err.style.display = 'block'
+          err.style.display = 'block';
+          flag[0] = 0;
       }
   }
   
+  var emailFlag = {0:1}, passwordFlag = {0:1}
   var email = document.querySelector('#email');
   var emailErr = document.querySelector('#emailErr');
+  var password = document.querySelector('#password');
+  var passErr = document.querySelector('#passErr');
+  var login = document.querySelector('#login');
 
   email.addEventListener('input', function(e){
       var pattern = /^(?!.*[._-]{2,})[a-z.A-Z_0-9-]+@([a-zA-Z0-9-]+\.)+[a-zA-Z]{2,}$/;
       var currentValue = e.target.value;
-      isValid(emailErr, pattern, currentValue);
+      isValid(emailErr, pattern, currentValue, emailFlag);
   })
 
+  password.addEventListener('input', function(e){
+      var pattern = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])((?=.*\W)|(?=.*_))[a-zA-Z0-9_\W]{8,20}$/;
+      var currentValue = e.target.value;
+      isValid(passErr, pattern, currentValue, passwordFlag);
+  })
+
+  function checkFields(){
+    console.log("checkFields");
+    if (emailFlag[0] == 1 && passwordFlag[0] == 1){
+        console.log("correct");
+        console.log(emailFlag);
+        console.log(passwordFlag);
+        login.removeAttribute('disabled');
+      }
+
+      else {
+        console.log("incorrect:");
+        console.log(emailFlag);
+        console.log(passwordFlag);
+        login.setAttribute('disabled', 'disabled');
+      }
+  }
 
   document.addEventListener('DOMContentLoaded', (event) => {
     const delErrMsg = () => {
