@@ -8,6 +8,8 @@ const rateLimit = require('express-rate-limit');
 const { loginUser } = require('./controllers/loginController');
 const path = require('path');
 const nocache = require("nocache");
+const https = require('https');
+const fs = require ('fs');
 
 const app = express();
 
@@ -54,7 +56,12 @@ const limiter = rateLimit({
 // authentication
 app.post('/api/login', limiter, loginUser);
 
-app.listen(process.env.PORT || 3000, () => {
+const httpsOptions = {
+  key: fs.readFileSync(path.join(__dirname, 'ssl', 'key.pem')),
+  cert: fs.readFileSync(path.join(__dirname, 'ssl', 'cert.pem')),
+};
+
+https.createServer(httpsOptions, app).listen(process.env.PORT || 3000, () => {
   console.log('Server started on port '+ process.env.PORT);
 });
 
