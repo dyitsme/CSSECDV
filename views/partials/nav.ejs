@@ -17,6 +17,11 @@
       <a class="navbar-item" href="/">
         Home
       </a>
+      <% if (user.isAdmin === 1) { %>
+        <a class="navbar-item" href="/admin">
+          Admin
+        </a>
+      <% } %>
     </div>
     <div class="navbar-end">
       <div class="navbar-item">
