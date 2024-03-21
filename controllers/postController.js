@@ -19,11 +19,11 @@ const createPost = async (req, res) => {
    filename: req.files["docu"][0].filename,
    path: req.files["docu"][0].path
   });
+  const { title, content } = req.body;
 
   var titlePattern = /^[a-zA-Z][a-z.,!?:A-Z\s-]{0,30}[a-z.!?A-Z]$/;
   var contentPattern = /^[a-zA-Z][a-z.,!?:A-Z\s-]{0,1024}[a-z.!?A-Z]$/;
   if (titlePattern.test(title && contentPattern.test(content))) {
-    const { title, content } = req.body;
     const response = await Post.createPost(userId, title, content, image, docu);
     if (response) {
       logger.info(`Transaction: User '${req.session.user?.email}' created a post.`);
