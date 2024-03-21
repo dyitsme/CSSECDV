@@ -34,7 +34,7 @@ app.use(express.json());
 
 app.use(session({
   secret: process.env.session_secret,
-  cookie: { maxAge: 60 * 1000 },
+  cookie: { maxAge: 60 * 60 * 1000 },
   saveUninitialized: true,
   resave: false,
   store: sessionStore
@@ -46,7 +46,7 @@ app.set('view engine', 'ejs');
 
 const limiter = rateLimit({
 	windowMs: 5 * 60 * 1000, // 1 minute
-	max: 3, // Limit each IP to 3 requests per `window` (here, per 1 minute)
+	max: 5, // Limit each IP to 3 requests per `window` (here, per 1 minute)
 	standardHeaders: true, // Return rate limit info in the `RateLimit-*` headers
 	legacyHeaders: false, // Disable the `X-RateLimit-*` headers
 });

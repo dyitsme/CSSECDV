@@ -1,8 +1,10 @@
+const db = require("../models/db");
 const Post = require("../models/post");
 const logger = require('../logger');
 
 const createPostView = async (req, res) => {
-  res.render("createpost");
+  const user = await db.getUserById(req.session.user.userId);
+  res.render("createpost", { user });
 };
 
 const createPost = async (req, res) => {
@@ -34,11 +36,12 @@ const updatePostView = async (req, res) => {
   // retrieve data from db by id
   // pass it onto the view
   const id = req.params.id;
+  const user = await db.getUserById(req.session.user.userId);
   const userId = req.session.user.userId
   // get session id of user, if fail show an error page
   const post = await Post.getUserPostById(id, userId);
   if (post) {
-    res.render("editpost", { post });
+    res.render("editpost", { user, post });
   }
   else {
     res.render("404");
@@ -85,11 +88,12 @@ const updatePost = async (req, res) => {
 
 const deletePostView = async (req, res) => {
   const id = req.params.id;
+  const user = await db.getUserById(req.session.user.userId);
   const userId = req.session.user.userId;
   const post = await Post.getUserPostById(id, userId);
   console.log(post);
   if (post) {
-    res.render("deletepost", { post });
+    res.render("deletepost", { user, post });
   }
   else {
     res.render("404");

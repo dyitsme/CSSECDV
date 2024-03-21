@@ -7,8 +7,10 @@
   <title>Document</title>
 </head>
 <body>
-  <%- include('./partials/nav.ejs') %>
-  Home
+  <%- include('./partials/nav.ejs', { user: user }) %>
+  <div class="block is-size-2">
+    Welcome, <%= user.firstName %>!
+  </div>
   <% if (posts.length > 0) { %>
     <% posts.forEach(post => { %>
       <div class="card">
@@ -38,16 +40,30 @@
           <div class="content">
             <%= post.content %>
           </div>
-          <div class="likes">
-            <div class="total-likes" id="total-likes-<%= post.id %>"><%= post.total_likes %></div>
-            <% if (post.isLiked === 0) { %>
-              <button id="like-<%= post.id %>" class="like" onclick="likeOrUnlike('<%= post.id %>', false)"><i class="fa-regular fa-thumbs-up"></i></button>
-              <button id="unlike-<%= post.id %>" class="unlike" style="display: none;" onclick="likeOrUnlike('<%= post.id %>', true)"><i class="fa-solid fa-thumbs-up"></i></button>
-            <% } else { %>
-              <button id="like-<%= post.id %>" class="like" style="display: none;" onclick="likeOrUnlike('<%= post.id %>', false)"><i class="fa-regular fa-thumbs-up"></i></button>
-              <button id="unlike-<%= post.id %>" class="unlike" onclick="likeOrUnlike('<%= post.id %>', true)"><i class="fa-solid fa-thumbs-up"></i></button>
-            <% } %>
-          </div>
+          <table>
+            <tr>
+              <td>
+                <div class="likes">
+                  <div class="total-likes" id="total-likes-<%= post.id %>"><%= post.total_likes %></div>
+                  <% if (post.isLiked === 0) { %>
+                    <button id="like-<%= post.id %>" class="like" onclick="likeOrUnlike('<%= post.id %>', false)"><i class="fa-regular fa-thumbs-up"></i></button>
+                    <button id="unlike-<%= post.id %>" class="unlike" style="display: none;" onclick="likeOrUnlike('<%= post.id %>', true)"><i class="fa-solid fa-thumbs-up"></i></button>
+                  <% } else { %>
+                    <button id="like-<%= post.id %>" class="like" style="display: none;" onclick="likeOrUnlike('<%= post.id %>', false)"><i class="fa-regular fa-thumbs-up"></i></button>
+                    <button id="unlike-<%= post.id %>" class="unlike" onclick="likeOrUnlike('<%= post.id %>', true)"><i class="fa-solid fa-thumbs-up"></i></button>
+                  <% } %>
+                </div>
+              </td>
+              <% if (post.userId === user.id) { %>
+              <td>
+                <a class="button is-light" href="/edit-post/<%= post.id %>">Edit</a>
+              </td>
+              <td>
+                <a class="button is-light" href="/delete-post/<%= post.id %>">Delete</a>
+              </td>
+              <% } %>
+            </tr>
+          </table>
         </div>
       </div>
     <%}) %>
