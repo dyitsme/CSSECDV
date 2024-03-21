@@ -8,15 +8,22 @@
 </head>
 <body>
   <div>
-    Are you sure you want to delete this post <%= post.title %>
-  </div>
-  <div class="buttons block">
-    <form action="/api/delete-post/<%= post.id %>" method="POST">
-      <button class="button is-danger">
-        Delete
-      </button>
-    </form>
-    <a href="/" class="button is-light">Cancel</a>
+    <div class="columns is-mobile is-centered">
+      <div class="column is-half box">
+        <header class="is-size-3 has-text-weight-bold block">Delete Post</header>
+        <div class="block">
+          Are you sure you want to delete this post: <%= post.title %>
+        </div>
+        <div class="buttons block">
+          <form action="/api/delete-post/<%= post.id %>" method="POST">
+            <button class="button is-danger">
+              Delete
+            </button>
+          </form>
+          <a href="/" class="button is-light">Cancel</a>
+        </div>
+      </div>
+    </div>
   </div>
 </body>
 </html>
